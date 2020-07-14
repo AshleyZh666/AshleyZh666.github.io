@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020/7 | Hexo</title>
+  <title>莫烦的RNN教学分类例子：手写数据集mnist | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2020/07/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="莫烦的RNN教学分类例子：手写数据集mnist">
+<meta property="og:url" content="http://yoursite.com/2020/07/15/%E8%8E%AB%E7%83%A6%E7%9A%84RNN%E6%95%99%E5%AD%A6%E5%88%86%E7%B1%BB%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%89%8B%E5%86%99%E6%95%B0%E6%8D%AE%E9%9B%86mnist/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="ch">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200614230125453.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0pvaG5fYXNobGV5,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-07-14T17:21:26.000Z">
+<meta property="article:modified_time" content="2020-07-14T17:38:30.164Z">
 <meta property="article:author" content="文远">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200614230125453.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0pvaG5fYXNobGV5,size_16,color_FFFFFF,t_70#pic_center">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -148,292 +152,168 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-莫烦的RNN教学分类例子：手写数据集mnist" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      莫烦的RNN教学分类例子：手写数据集mnist
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E8%8E%AB%E7%83%A6%E7%9A%84RNN%E6%95%99%E5%AD%A6%E5%88%86%E7%B1%BB%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%89%8B%E5%86%99%E6%95%B0%E6%8D%AE%E9%9B%86mnist/" class="archive-article-date">
+
+        
+        <a href="/2020/07/15/%E8%8E%AB%E7%83%A6%E7%9A%84RNN%E6%95%99%E5%AD%A6%E5%88%86%E7%B1%BB%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%89%8B%E5%86%99%E6%95%B0%E6%8D%AE%E9%9B%86mnist/" class="archive-article-date">
   	<time datetime="2020-07-14T17:21:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E8%8E%AB%E7%83%A6%E7%9A%84RNN%E6%95%99%E5%AD%A6%E5%88%86%E7%B1%BB%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%89%8B%E5%86%99%E6%95%B0%E6%8D%AE%E9%9B%86mnist/">莫烦的RNN教学分类例子：手写数据集mnist</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><a id="more"></a>
+<h2 id="莫烦大佬的RNN教学"><a href="#莫烦大佬的RNN教学" class="headerlink" title="莫烦大佬的RNN教学"></a><a href="https://morvanzhou.github.io/tutorials/machine-learning/torch/4-02-RNN-classification/" target="_blank" rel="noopener">莫烦大佬的RNN教学</a></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">To know more or get code samples, please visit my website:</span></span><br><span class="line"><span class="string">https://morvanzhou.github.io/tutorials/</span></span><br><span class="line"><span class="string">Or search: 莫烦Python</span></span><br><span class="line"><span class="string">Thank you for supporting!</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># please note, all tutorial code are running under python3.5.</span></span><br><span class="line"><span class="comment"># If you use the version like python2.7, please modify the code accordingly</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 8 - RNN Classifier example</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># to try tensorflow, un-comment following two lines</span></span><br><span class="line"><span class="comment"># import os</span></span><br><span class="line"><span class="comment"># os.environ['KERAS_BACKEND']='tensorflow'</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">np.random.seed(<span class="number">1337</span>)  <span class="comment"># for reproducibility</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> np_utils</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> SimpleRNN, Activation, Dense</span><br><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> Adam</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">TIME_STEPS = <span class="number">28</span>     <span class="comment"># same as the height of the image</span></span><br><span class="line">INPUT_SIZE = <span class="number">28</span>     <span class="comment"># same as the width of the image</span></span><br><span class="line">BATCH_SIZE = <span class="number">50</span></span><br><span class="line">BATCH_INDEX = <span class="number">0</span></span><br><span class="line">OUTPUT_SIZE = <span class="number">10</span></span><br><span class="line">CELL_SIZE = <span class="number">50</span></span><br><span class="line">LR = <span class="number">0.001</span></span><br><span class="line">generation=<span class="number">8001</span></span><br><span class="line">accu=[]</span><br><span class="line">los=[]</span><br><span class="line">x=[]</span><br><span class="line"></span><br><span class="line"><span class="comment"># download the mnist to the path '~/.keras/datasets/' if it is the first time to be called</span></span><br><span class="line"><span class="comment"># X shape (60,000 28x28), y shape (10,000, )</span></span><br><span class="line"><span class="comment"># (X_train, y_train), (X_test, y_test) = mnist.load_data()</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">path=<span class="string">'./mnist.npz'</span></span><br><span class="line">buff = np.load(path)</span><br><span class="line">X_train, y_train = buff[<span class="string">'x_train'</span>], buff[<span class="string">'y_train'</span>]</span><br><span class="line">X_test, y_test = buff[<span class="string">'x_test'</span>], buff[<span class="string">'y_test'</span>]</span><br><span class="line">buff.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># SimpleRNN</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># data pre-processing</span></span><br><span class="line">X_train = X_train.reshape(<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>) / <span class="number">255.</span>      <span class="comment"># normalize</span></span><br><span class="line">X_test = X_test.reshape(<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>) / <span class="number">255.</span>        <span class="comment"># normalize</span></span><br><span class="line">y_train = np_utils.to_categorical(y_train, num_classes=<span class="number">10</span>)</span><br><span class="line">y_test = np_utils.to_categorical(y_test, num_classes=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># build RNN model</span></span><br><span class="line">model = Sequential()</span><br><span class="line"></span><br><span class="line"><span class="comment"># RNN cell</span></span><br><span class="line">model.add(SimpleRNN(</span><br><span class="line">    <span class="comment"># for batch_input_shape, if using tensorflow as the backend, we have to put None for the batch_size.</span></span><br><span class="line">    <span class="comment"># Otherwise, model.evaluate() will get error.</span></span><br><span class="line">    unroll=<span class="literal">True</span>,</span><br><span class="line">    batch_input_shape=(<span class="literal">None</span>, TIME_STEPS, INPUT_SIZE),       <span class="comment"># Or: input_dim=INPUT_SIZE, input_length=TIME_STEPS,</span></span><br><span class="line">    output_dim=CELL_SIZE,</span><br><span class="line">    </span><br><span class="line">))</span><br><span class="line"></span><br><span class="line"><span class="comment"># output layer</span></span><br><span class="line">model.add(Dense(OUTPUT_SIZE))</span><br><span class="line">model.add(Activation(<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># optimizer</span></span><br><span class="line">adam = Adam(LR)</span><br><span class="line">model.compile(optimizer=adam,</span><br><span class="line">              loss=<span class="string">'categorical_crossentropy'</span>,</span><br><span class="line">              metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># training</span></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> range(generation):</span><br><span class="line">    <span class="comment"># data shape = (batch_num, steps, inputs/outputs)</span></span><br><span class="line">    X_batch = X_train[BATCH_INDEX: BATCH_INDEX+BATCH_SIZE, :, :]</span><br><span class="line">    Y_batch = y_train[BATCH_INDEX: BATCH_INDEX+BATCH_SIZE, :]</span><br><span class="line">    cost = model.train_on_batch(X_batch, Y_batch)</span><br><span class="line">    BATCH_INDEX += BATCH_SIZE</span><br><span class="line">    BATCH_INDEX = <span class="number">0</span> <span class="keyword">if</span> BATCH_INDEX &gt;= X_train.shape[<span class="number">0</span>] <span class="keyword">else</span> BATCH_INDEX</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> step % <span class="number">500</span> == <span class="number">0</span>:</span><br><span class="line">        cost, accuracy = model.evaluate(X_test, y_test, batch_size=y_test.shape[<span class="number">0</span>], verbose=<span class="literal">False</span>)</span><br><span class="line">        print(<span class="string">'&#123;&#125;th test cost:&#123;&#125;'</span>.format(int(step/<span class="number">500</span>), cost), <span class="string">'test accuracy: '</span>, accuracy)</span><br><span class="line"></span><br><span class="line">        los=np.append(los,cost)</span><br><span class="line">        accu=np.append(accu,accuracy)</span><br><span class="line"></span><br><span class="line">print(los)</span><br><span class="line">print(accu)</span><br><span class="line">x=range(int(generation/<span class="number">500</span>)+<span class="number">1</span>)</span><br><span class="line">x=np.array(x)</span><br><span class="line">x=x+<span class="number">1</span></span><br><span class="line">print(x)</span><br><span class="line"><span class="comment"># %matplotlib inline</span></span><br><span class="line">plt.figure(<span class="number">1</span>, figsize=(<span class="number">12</span>, <span class="number">6</span>))</span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.plot(x, los, <span class="string">'r'</span>,label=<span class="string">'mnist predict loss'</span>)</span><br><span class="line">plt.xlabel(<span class="string">"generation"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"loss value"</span>)</span><br><span class="line">plt.legend(loc=<span class="string">'best'</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.plot(x,accu, <span class="string">'black'</span>,label=<span class="string">'mnist predict accuracy'</span>)</span><br><span class="line">plt.xlabel(<span class="string">"generation"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"accuracy value"</span>)</span><br><span class="line">plt.legend(loc=<span class="string">'best'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>结果：<br><img src="https://img-blog.csdnimg.cn/20200614230125453.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0pvaG5fYXNobGV5,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>由于此数据即对应是对应的.npz格式的，需要配套下载<br>网站被墙了:<a href="https://s3.amazonaws.com/img-datasets/mnist.npz" target="_blank" rel="noopener">mnist.npz</a><br>数据集如下：<a href="https://download.csdn.net/download/John_ashley/12515830" target="_blank" rel="noopener">数据集</a><br>学习使用。侵权速删</p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我喝咖啡<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/setting/pay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/setting/pay2.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/15/%E8%8E%AB%E7%83%A6%E7%9A%84RNN%E6%95%99%E5%AD%A6%E5%88%86%E7%B1%BB%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%89%8B%E5%86%99%E6%95%B0%E6%8D%AE%E9%9B%86mnist/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E6%B7%B1%E5%85%A5%E7%AE%80%E5%87%BAmatplotlib%E7%94%BB%E5%B5%8C%E5%A5%97%E9%A5%BC%E7%8A%B6%E5%9B%BE%E7%9A%84%E7%BB%86%E8%8A%82%E6%93%8D%E4%BD%9C/" class="archive-article-date">
-  	<time datetime="2020-07-14T17:20:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/07/15/%E6%B7%B1%E5%85%A5%E7%AE%80%E5%87%BAmatplotlib%E7%94%BB%E5%B5%8C%E5%A5%97%E9%A5%BC%E7%8A%B6%E5%9B%BE%E7%9A%84%E7%BB%86%E8%8A%82%E6%93%8D%E4%BD%9C/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">深入简出matplotlib画嵌套饼状图的细节操作</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E6%B7%B1%E5%85%A5%E7%AE%80%E5%87%BAmatplotlib%E7%94%BB%E5%B5%8C%E5%A5%97%E9%A5%BC%E7%8A%B6%E5%9B%BE%E7%9A%84%E7%BB%86%E8%8A%82%E6%93%8D%E4%BD%9C/">深入简出matplotlib画嵌套饼状图的细节操作</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E8%B6%85%E8%AF%A6%E7%BB%86plotly%E7%94%BB%E6%8A%98%E7%BA%BF%E5%9B%BE%E4%BE%8B%E5%AD%90-%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1%E8%83%8C%E5%8D%95%E8%AF%8D/" class="archive-article-date">
-  	<time datetime="2020-07-14T17:20:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E8%B6%85%E8%AF%A6%E7%BB%86plotly%E7%94%BB%E6%8A%98%E7%BA%BF%E5%9B%BE%E4%BE%8B%E5%AD%90-%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1%E8%83%8C%E5%8D%95%E8%AF%8D/">超详细plotly画折线图例子----记录自己背单词</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E8%B6%85%E7%BA%A7%E8%AF%A6%E7%BB%86%E7%9A%84PSIM%E6%9C%80%E5%B0%8F%E6%8B%8D%E6%97%A0%E6%B3%A2%E7%BA%B9%E4%BB%BF%E7%9C%9F%EF%BC%8C%E5%BD%93%E4%BD%9C%E6%9C%9F%E6%9C%AB%E7%AC%94%E8%AE%B0%E4%BA%86/" class="archive-article-date">
-  	<time datetime="2020-07-14T17:19:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E8%B6%85%E7%BA%A7%E8%AF%A6%E7%BB%86%E7%9A%84PSIM%E6%9C%80%E5%B0%8F%E6%8B%8D%E6%97%A0%E6%B3%A2%E7%BA%B9%E4%BB%BF%E7%9C%9F%EF%BC%8C%E5%BD%93%E4%BD%9C%E6%9C%9F%E6%9C%AB%E7%AC%94%E8%AE%B0%E4%BA%86/">超级详细的PSIM最小拍无波纹仿真，当作期末笔记了</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BB%8E%E8%A7%86%E9%A2%91%E4%B8%8A%E6%89%92%E6%8B%89%E7%9A%84%E5%86%B3%E7%AD%96%E6%A0%91%E5%BA%94%E4%BB%98%E4%BD%9C%E4%B8%9A/" class="archive-article-date">
-  	<time datetime="2020-07-14T16:59:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BB%8E%E8%A7%86%E9%A2%91%E4%B8%8A%E6%89%92%E6%8B%89%E7%9A%84%E5%86%B3%E7%AD%96%E6%A0%91%E5%BA%94%E4%BB%98%E4%BD%9C%E4%B8%9A/">面向对象从视频上扒拉的决策树应付作业</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E5%85%B3%E4%BA%8E%E8%A7%A3%E5%86%B3matplotlib%E7%94%BB%E5%9B%BE%E6%97%B6-legend%E5%9B%BE%E4%BE%8B%E6%A0%87%E7%AD%BE%E6%B1%89%E5%AD%97%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-07-14T16:54:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E5%85%B3%E4%BA%8E%E8%A7%A3%E5%86%B3matplotlib%E7%94%BB%E5%9B%BE%E6%97%B6-legend%E5%9B%BE%E4%BE%8B%E6%A0%87%E7%AD%BE%E6%B1%89%E5%AD%97%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/">关于解决matplotlib画图时,legend图例标签汉字乱码问题</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E5%85%B3%E4%BA%8Esklearn%E4%B8%AD%E7%9A%84%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%8C%E6%A0%87%E5%87%86%E5%8C%96%E4%BB%A5%E5%8F%8A%E8%BF%94%E5%9B%9Einverse-transform%EF%BC%88%EF%BC%89%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BE%8B%E5%AD%90%EF%BC%8C%E9%99%84%E5%B8%A6%E5%85%B7%E4%BD%93%E7%9A%84%E5%9B%9E%E5%BD%92%E9%A2%84%E6%B5%8B%E7%9A%84%E4%BE%8B%E5%AD%90/" class="archive-article-date">
-  	<time datetime="2020-07-14T16:50:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E5%85%B3%E4%BA%8Esklearn%E4%B8%AD%E7%9A%84%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%8C%E6%A0%87%E5%87%86%E5%8C%96%E4%BB%A5%E5%8F%8A%E8%BF%94%E5%9B%9Einverse-transform%EF%BC%88%EF%BC%89%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BE%8B%E5%AD%90%EF%BC%8C%E9%99%84%E5%B8%A6%E5%85%B7%E4%BD%93%E7%9A%84%E5%9B%9E%E5%BD%92%E9%A2%84%E6%B5%8B%E7%9A%84%E4%BE%8B%E5%AD%90/">关于sklearn中的归一化，标准化以及返回inverse_transform（）的详细例子，附带具体的回归预测的例子</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88%EF%BC%8C%E6%9F%A5%E6%89%BEexcal%E4%B8%AD%E7%AC%A6%E5%90%88%E4%BF%A1%E6%81%AF%E7%9A%84%E5%88%97%EF%BC%8C%E5%AD%98%E5%9C%A8%E6%96%B0%E7%9A%84excel%E4%B8%AD/" class="archive-article-date">
-  	<time datetime="2020-07-14T16:50:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88%EF%BC%8C%E6%9F%A5%E6%89%BEexcal%E4%B8%AD%E7%AC%A6%E5%90%88%E4%BF%A1%E6%81%AF%E7%9A%84%E5%88%97%EF%BC%8C%E5%AD%98%E5%9C%A8%E6%96%B0%E7%9A%84excel%E4%B8%AD/">亲测有效，查找excal中符合信息的列，存在新的excel中</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%A2%84%E6%B5%8B%E5%AE%9E%E8%B7%B5%E5%90%8E%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%8C%E4%BB%A5%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BE%83%E5%B0%8F%E4%B8%BA%E5%85%B8%E5%9E%8B%E7%90%86%E8%A7%A3%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81/" class="archive-article-date">
-  	<time datetime="2020-07-14T16:07:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%A2%84%E6%B5%8B%E5%AE%9E%E8%B7%B5%E5%90%8E%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%8C%E4%BB%A5%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BE%83%E5%B0%8F%E4%B8%BA%E5%85%B8%E5%9E%8B%E7%90%86%E8%A7%A3%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81/">机器学习预测实践后的总结，以数据量较小为典型理解交叉验证</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/14/hello-world/" class="archive-article-date">
-  	<time datetime="2020-07-14T07:14:03.666Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/14/hello-world/">关于Hexo框架下个人博客使用的常用命令</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -456,8 +336,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
