@@ -38,7 +38,57 @@
 
 <meta name="generator" content="Hexo 4.2.1"></head>
 
+
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js"></script>
+<script type="text/javascript">
+    L2Dwidget.init({
+		  model: {
+      // jsonPath: '/./packages/live2d-widget-model-wanko/assets/wanko.model.json',
+      jsonPath: '/live2d-widget-models/packages/live2d-widget-model-wanko/assets/wanko.model.json',
+			scale: 1,
+			hHeadPos: 0.5,
+			vHeadPos: 0.618,
+			myDefine: []
+		  },
+		  display: {
+			superSample: 2,
+			width: 100,
+			height: 200,
+			position: 'right',
+			hOffset: 0,
+			vOffset: -20
+		  },
+		  mobile: {
+			show: true,
+			scale: 0.5,
+			motion: true
+		  },
+		  name: {
+			canvas: 'live2dcanvas',
+			div: 'live2d-widget'
+		  },
+		  react: {
+			opacityDefault: 0.7,
+			opacityOnHover: 0.2
+			
+		  },
+		  dev: {
+			log: false,
+			border: false,
+			mouseLog: false
+			
+		  }
+		});
+</script>
+
 <body>
+  
+  <div id="live2d-widget">
+		<canvas id="live2dcanvas" width="300" height="600" style="position: fixed; opacity: 0.7; 
+			right: 0px; bottom: -20px; z-index: 99999; pointer-events: none; border: 1px dashed rgb(204, 204, 204);">
+		</canvas>
+  </div>
+
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
@@ -170,7 +220,14 @@
   
 
         
-        <a href="/2020/07/15/%E8%B6%85%E8%AF%A6%E7%BB%86plotly%E7%94%BB%E6%8A%98%E7%BA%BF%E5%9B%BE%E4%BE%8B%E5%AD%90-%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1%E8%83%8C%E5%8D%95%E8%AF%8D/" class="archive-article-date">
+        
+
+<span id="busuanzi_container_page_pv" 
+style='display:none' class="archive-article-date">
+    <i class="icon-smile icon"></i> 阅读数：
+    <span id="busuanzi_value_page_pv"></span>次
+</span>
+<a href="/2020/07/15/%E8%B6%85%E8%AF%A6%E7%BB%86plotly%E7%94%BB%E6%8A%98%E7%BA%BF%E5%9B%BE%E4%BE%8B%E5%AD%90-%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1%E8%83%8C%E5%8D%95%E8%AF%8D/" class="archive-article-date">
   	<time datetime="2020-07-14T17:20:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
 </a>
         
@@ -353,6 +410,9 @@
       <footer id="footer">
   <div class="outer">
     <div id="footer-info">
+
+		<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
     	<div class="footer-left">
     		&copy; 2020 文远
     	</div>
@@ -365,6 +425,15 @@
 
 <!--页面点击小红心-->
 <script type="text/javascript" src="/fuck.js"></script>
+
+<div class="powered-by">
+    <!-- <span id="busuanzi_container_site_uv"> -->
+        站长统计访客数:<span id="busuanzi_value_site_uv"></span> ||
+    </span>
+    <!-- <span id="busuanzi_container_site_pv"> -->
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+    </span>
+</div>
     </div>
     <script>
 	var yiliaConfig = {
