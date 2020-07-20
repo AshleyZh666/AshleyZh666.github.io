@@ -15,7 +15,7 @@
 <meta property="og:locale" content="ch">
 <meta property="og:image" content="http://yoursite.com/2020/07/20/%E6%88%91%E4%B8%8E%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-1//%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.png">
 <meta property="article:published_time" content="2020-07-19T16:27:56.000Z">
-<meta property="article:modified_time" content="2020-07-20T11:39:58.190Z">
+<meta property="article:modified_time" content="2020-07-20T13:35:42.604Z">
 <meta property="article:author" content="文远">
 <meta property="article:tag" content="动态规划">
 <meta name="twitter:card" content="summary">
@@ -282,7 +282,51 @@ style='display:none' class="archive-article-date">
 <p><strong>算法类:  动态规划(DP) 回溯 矩阵快速幂 递归 深度广搜索（DFS BFS） 贪心 剪纸 分治 记忆化搜索</strong><br><br/></p>
 <p><em>题目: 完全背包 01背包</em></p>
 <h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p><img src=".//%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.png" alt="avatar"></p>
-<h2 id="动态规划题目特征"><a href="#动态规划题目特征" class="headerlink" title="动态规划题目特征"></a>动态规划题目特征</h2>
+<!-- ![avatar](./动态规划.png;base64) -->
+
+<ul>
+<li>矩阵型</li>
+<li>序列型</li>
+<li>双序列型</li>
+<li>划分型</li>
+<li>区间型</li>
+<li>背包型</li>
+<li>状态压缩型</li>
+<li>树型</li>
+</ul>
+<h2 id="动态规划题目特征"><a href="#动态规划题目特征" class="headerlink" title="动态规划题目特征"></a>动态规划题目特征</h2><ul>
+<li><ol>
+<li>结果种类数</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>最值问题</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>可行性问题</li>
+</ol>
+</li>
+</ul>
+<h2 id="动态规划规定步骤"><a href="#动态规划规定步骤" class="headerlink" title="动态规划规定步骤"></a>动态规划规定步骤</h2><h3 id="壹、找出状态"><a href="#壹、找出状态" class="headerlink" title="壹、找出状态"></a>壹、找出状态</h3><p>1.首先是想出达到结果的上一步，这也就问题可分解成子问题。那么寻找题解的最后一步（即子问题），通过对比子问题与原问题，找到状态，并且根据状态变换的变量个数确定储存状态解的数组（或者其他数据结构）的维度。</p>
+<hr>
+<p>举例：</p>
+<p><strong>原问题</strong> 找到从(0,0)到（n-1,n-1）的路径数量</p>
+<p><strong>子问题</strong> 找到从(0,0)到（n-2,n-1）路径的数量加上找到从(0,0)到（n-1,n-2）的路径数量</p>
+<br/>
+**F(n-1,n-1)表示要求的路径数量*
+<br/>
+直接得到了状态如上设F,
+而因为有两个量变化，因此设的存储结构维度为二。
+
+<h3 id="贰、列出转移方程"><a href="#贰、列出转移方程" class="headerlink" title="贰、列出转移方程"></a>贰、列出转移方程</h3><p>如过状态已经找出来的话，转移方程还是很好列的，有些类似于递推公式，和递归的全局遍历性不同（递归有很多重复计算，个人感觉和当时学迪杰斯特拉算法很像）</p>
+<p><strong>举例：就像最简单的斐波那契数列的转移方程为:</strong><br><em>*F(n)=F(n-1)+F(n-2)</em></p>
+<h3 id="叁、初始条件和边界"><a href="#叁、初始条件和边界" class="headerlink" title="叁、初始条件和边界"></a>叁、初始条件和边界</h3><p>初始条件很好理解，大都是F(0)=0,简单理解能让迭代进行下去的必要条件（子问题变到了最小单位，主观能够得到）<br><em>反向：如果没有初始条件，运算无法继续</em><br>边界：eg.例如数组溢出，采取得分的操作（特别是最优问题时，将溢出部分幅值为惩罚项极大的）</p>
+<p><strong>举例:寻找某最小值</strong><br/><br><em>*F(-1)=Inf or 一个很大的数，一般大于正常结果两三个数量级就够了</em></p>
+<h3 id="肆、优化求解顺序"><a href="#肆、优化求解顺序" class="headerlink" title="肆、优化求解顺序"></a>肆、优化求解顺序</h3><p>其实是客观条件决定的<br/><br><strong>举例：就像最简单的斐波那契数列:</strong><br><em>*F(n)=F(n-1)+F(n-2)</em><br>因此必须要知道F(n-1),F(n-2)，因此只能从小到大</p>
+<p><strong>二维举例：</strong><br>路径数量：<br>因为转移方程：F(n-1,n-1)=F(n-2,n-1)+F(n-1,n-2)<br>因此从左到右，从上到下<br><br/><br>(0,0)     …………………. (0,n-1)<br><br/><br/><br/><br/><br/><br/><br/><br>(n-1,0)     …………………. (n-1,n-1)</p>
+<h2 id="阶段一7-20总结"><a href="#阶段一7-20总结" class="headerlink" title="阶段一7.20总结"></a>阶段一7.20总结</h2><p><strong>## **动态规划在用空间换时间，通过求解每个子问题，并记录下来子问题的解，帮助解决更大的问题。最终求解我们需要的问题。</strong></p>
+
       
 
 
@@ -455,7 +499,7 @@ style='display:none' class="archive-article-date">
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text"></span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#动态规划"><span class="toc-number">1.1.</span> <span class="toc-text">动态规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态规划题目特征"><span class="toc-number">1.2.</span> <span class="toc-text">动态规划题目特征</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text"></span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#动态规划"><span class="toc-number">1.1.</span> <span class="toc-text">动态规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态规划题目特征"><span class="toc-number">1.2.</span> <span class="toc-text">动态规划题目特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态规划规定步骤"><span class="toc-number">1.3.</span> <span class="toc-text">动态规划规定步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#壹、找出状态"><span class="toc-number">1.3.1.</span> <span class="toc-text">壹、找出状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#贰、列出转移方程"><span class="toc-number">1.3.2.</span> <span class="toc-text">贰、列出转移方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#叁、初始条件和边界"><span class="toc-number">1.3.3.</span> <span class="toc-text">叁、初始条件和边界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#肆、优化求解顺序"><span class="toc-number">1.3.4.</span> <span class="toc-text">肆、优化求解顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阶段一7-20总结"><span class="toc-number">1.4.</span> <span class="toc-text">阶段一7.20总结</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
