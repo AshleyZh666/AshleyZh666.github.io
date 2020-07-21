@@ -6,16 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>亲测有效，查找excal中符合信息的列，存在新的excel中 | 蓦然回首</title>
+  <title>冷二郎 | 蓦然回首</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="亲测有效，查找excal中符合信息的列，存在新的excel中">
-<meta property="og:url" content="http://yoursite.com/2020/07/15/%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88%EF%BC%8C%E6%9F%A5%E6%89%BEexcal%E4%B8%AD%E7%AC%A6%E5%90%88%E4%BF%A1%E6%81%AF%E7%9A%84%E5%88%97%EF%BC%8C%E5%AD%98%E5%9C%A8%E6%96%B0%E7%9A%84excel%E4%B8%AD/index.html">
+  <meta name="description" content="酷哥成月光的清风—柳湘莲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="冷二郎">
+<meta property="og:url" content="http://yoursite.com/2020/07/21/%E5%86%B7%E4%BA%8C%E9%83%8E/index.html">
 <meta property="og:site_name" content="蓦然回首">
+<meta property="og:description" content="酷哥成月光的清风—柳湘莲">
 <meta property="og:locale" content="ch">
-<meta property="article:published_time" content="2020-07-14T16:50:26.000Z">
-<meta property="article:modified_time" content="2020-07-16T05:46:00.190Z">
+<meta property="article:published_time" content="2020-07-21T15:33:52.000Z">
+<meta property="article:modified_time" content="2020-07-21T15:36:14.882Z">
 <meta property="article:author" content="文远">
+<meta property="article:tag" content="随笔">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="蓦然回首" type="application/atom+xml">
@@ -244,19 +247,15 @@
           </div>
           <div id="js-content" class="content-ll">
             
-  <i class="fa fa-thumb-tack"></i>
-  <font color=7D26CD>置顶</font>
-  <span class="post-meta-divider">|</span>
 
-
-<article id="post-亲测有效，查找excal中符合信息的列，存在新的excel中" class="article article-type-post " itemscope itemprop="blogPost">
+<article id="post-冷二郎" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      亲测有效，查找excal中符合信息的列，存在新的excel中
+      冷二郎
     </h1>
   
 
@@ -270,25 +269,15 @@ style='display:none' class="archive-article-date">
     <i class="icon-smile icon"></i> 阅读数：
     <span id="busuanzi_value_page_pv"></span>次
 </span>
-<a href="/2020/07/15/%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88%EF%BC%8C%E6%9F%A5%E6%89%BEexcal%E4%B8%AD%E7%AC%A6%E5%90%88%E4%BF%A1%E6%81%AF%E7%9A%84%E5%88%97%EF%BC%8C%E5%AD%98%E5%9C%A8%E6%96%B0%E7%9A%84excel%E4%B8%AD/" class="archive-article-date">
-  	<time datetime="2020-07-14T16:50:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
+<a href="/2020/07/21/%E5%86%B7%E4%BA%8C%E9%83%8E/" class="archive-article-date">
+  	<time datetime="2020-07-21T15:33:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-21</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><a id="more"></a>
-
-<p>本来就是只想找一下，excel 处理的，，，，然而这个上面的都是，，，，<br>貌似有两条思路，一种用传统的py对excel的库，另一种就是pd了，<br>找不到就直接pd转成数组了，处理之后再save一下，save的过程可以模仿一下，<br>总的来说就是只是在筛选符合要求的特定行，存为新的xlsx.</p>
-<hr>
-<p>但是在下面，我会扩展两个问题。代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">@File    :  excel_try2.py</span></span><br><span class="line"><span class="string">@Time    :   2020/07/13 00:24:03</span></span><br><span class="line"><span class="string">@Author  :   ashley</span></span><br><span class="line"><span class="string">@Contact :   512985297@qq.com</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> openpyxl</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> xlrd</span><br><span class="line"><span class="keyword">from</span> xlwt <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> openpyxl <span class="keyword">import</span> Workbook</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># path1 = 'C:\\Users\\文远\\Desktop\\git_test\\'</span></span><br><span class="line"><span class="comment">#数据来源，也就是excel表来源</span></span><br><span class="line"><span class="comment">#解释，是xlsx不是xls</span></span><br><span class="line"></span><br><span class="line">data=pd.DataFrame(pd.read_excel(path1))</span><br><span class="line"><span class="comment"># feature_name=</span></span><br><span class="line"></span><br><span class="line">data_value=data.values</span><br><span class="line">print(data_value)</span><br><span class="line">print(type(data_value))</span><br><span class="line"></span><br><span class="line">row,col = data_value.shape[<span class="number">0</span>],data_value.shape[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">name_excellent = []<span class="comment">#此为挑选信息做准备</span></span><br><span class="line"><span class="comment">#其实就是查找xlsx中符合信息的列，存在新的xlsx中</span></span><br><span class="line"><span class="comment">#select = []</span></span><br><span class="line">print(name_excellent)</span><br><span class="line">print(name_excellent[<span class="number">6</span>])</span><br><span class="line"><span class="comment"># print(aa[0])</span></span><br><span class="line">print(type(name_excellent))</span><br><span class="line"><span class="comment"># print(row,col)</span></span><br><span class="line"><span class="comment"># index=[]</span></span><br><span class="line">index = np.array([])</span><br><span class="line">number=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(row):</span><br><span class="line">    <span class="comment"># for j in range(col):</span></span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> name_excellent:</span><br><span class="line">        <span class="keyword">if</span> data_value[i,<span class="number">1</span>] == name:</span><br><span class="line">            index = np.append(index,i)</span><br><span class="line">        <span class="comment"># if data_value[i,]</span></span><br><span class="line">print(index)</span><br><span class="line">print(type(index))</span><br><span class="line">index = index.astype(<span class="string">'int32'</span>) <span class="comment">#重要的转换，为了能够索引</span></span><br><span class="line">print(type(index))</span><br><span class="line">data_index = data_value[index,:]<span class="comment">#得到了特定xlsx的行了</span></span><br><span class="line">print(<span class="string">"$"</span>*<span class="number">100</span>)</span><br><span class="line"><span class="comment"># print(data_index)</span></span><br><span class="line">print(data_index.shape)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arr2excel</span><span class="params">(data,path)</span>:</span></span><br><span class="line">    wb = Workbook()</span><br><span class="line">    ws = wb.active <span class="comment"># 激活 worksheet</span></span><br><span class="line">    [h, l] = data.shape  <span class="comment"># h为行数，l为列数</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,h):</span><br><span class="line">        row = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(l):</span><br><span class="line">            row.append(data[i,j])</span><br><span class="line">        ws.append(row)</span><br><span class="line">        wb.save(path)</span><br><span class="line"><span class="comment"># print(ws)</span></span><br><span class="line"><span class="comment"># print(type(ws))</span></span><br><span class="line">arr2excel(data_index,<span class="string">'.//Test.xlsx'</span>)<span class="comment">#存在当前目录</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="如过有多个sheet咋办"><a href="#如过有多个sheet咋办" class="headerlink" title="如过有多个sheet咋办"></a>如过有多个sheet咋办</h2><p>我的方式简单粗暴，再加一层循环，大概形式如下:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wb1 = openpyxl.load_workbook(path1)</span><br><span class="line">sheets1 = wb1.get_sheet_names()<span class="comment">#sheets1里面装的就是所有的sheet名字,list</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(sheets1)):<span class="comment">#就是加这层循环里的</span></span><br><span class="line">    sheet= wb1.get_sheet_by_name(sheets1[i])</span><br></pre></td></tr></table></figure>
-<h2 id="如果使用的是xls，不是xlsx"><a href="#如果使用的是xls，不是xlsx" class="headerlink" title="如果使用的是xls，不是xlsx"></a>如果使用的是xls，不是xlsx</h2><p>其中的cell函数有些差别，具体的函数，好好查一查，目的驱动</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> sheet.cell_value(r,<span class="number">3</span>) == <span class="string">"??????"</span>:</span><br><span class="line"><span class="keyword">if</span> sheet.cell(row=r,column=<span class="number">3</span>).value == <span class="string">"?????"</span>:</span><br><span class="line"><span class="comment">#这是一个重要的函数区别，注意就好</span></span><br><span class="line">openpyxl.load_workbook(path1)<span class="comment">#-----加载xlsx</span></span><br><span class="line">xlrd.open_workbook(path2)<span class="comment">#------加载xls</span></span><br></pre></td></tr></table></figure>
+        <h4 id="酷哥"><a href="#酷哥" class="headerlink" title="酷哥"></a>酷哥</h4><p>成月光的清风<br><br/><br><br/><br/><br><br/><br/><br><br/><br/><br><br/><br/><br><br/><br/><br><br/><br/><br><br/><br/><br><br/><br>—柳湘莲</p>
 
       
 
@@ -348,12 +337,18 @@ style='display:none' class="archive-article-date">
     </div>
     <div class="article-info article-info-index">
       
-        <div class="article-pop-out tagcloud">
-          <i class="icon-tuding"></i>
-          <a class="article-tag-list-link color3">置顶</a>
-        </div>
       
-      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -404,7 +399,7 @@ style='display:none' class="archive-article-date">
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/15/%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88%EF%BC%8C%E6%9F%A5%E6%89%BEexcal%E4%B8%AD%E7%AC%A6%E5%90%88%E4%BF%A1%E6%81%AF%E7%9A%84%E5%88%97%EF%BC%8C%E5%AD%98%E5%9C%A8%E6%96%B0%E7%9A%84excel%E4%B8%AD/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/21/%E5%86%B7%E4%BA%8C%E9%83%8E/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -418,18 +413,9 @@ style='display:none' class="archive-article-date">
   
 <nav id="article-nav">
   
-    <a href="/2020/07/15/%E5%85%B3%E4%BA%8Esklearn%E4%B8%AD%E7%9A%84%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%8C%E6%A0%87%E5%87%86%E5%8C%96%E4%BB%A5%E5%8F%8A%E8%BF%94%E5%9B%9Einverse-transform%EF%BC%88%EF%BC%89%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BE%8B%E5%AD%90%EF%BC%8C%E9%99%84%E5%B8%A6%E5%85%B7%E4%BD%93%E7%9A%84%E5%9B%9E%E5%BD%92%E9%A2%84%E6%B5%8B%E7%9A%84%E4%BE%8B%E5%AD%90/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          关于sklearn中的归一化，标准化以及返回inverse_transform（）的详细例子，附带具体的回归预测的例子
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/07/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%A2%84%E6%B5%8B%E5%AE%9E%E8%B7%B5%E5%90%8E%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%8C%E4%BB%A5%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BE%83%E5%B0%8F%E4%B8%BA%E5%85%B8%E5%9E%8B%E7%90%86%E8%A7%A3%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">机器学习预测实践后的总结，以数据量较小为典型理解交叉验证</div>
+    <a href="/2020/07/21/%E6%B5%81%E6%B0%B4/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">流水</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -456,7 +442,7 @@ style='display:none' class="archive-article-date">
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text"></span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如过有多个sheet咋办"><span class="toc-number">1.1.</span> <span class="toc-text">如过有多个sheet咋办</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如果使用的是xls，不是xlsx"><span class="toc-number">1.2.</span> <span class="toc-text">如果使用的是xls，不是xlsx</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#酷哥"><span class="toc-number">1.</span> <span class="toc-text">酷哥</span></a></li></ol>
                     </div>
                 </span>
             </div>
