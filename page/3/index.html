@@ -104,7 +104,7 @@
     </ul>
 </nav> -->
 <nav>
-    总文章数 57
+    总文章数 56
 </nav>
 
 <div class="overlay" style="background: #e22e2e"></div>
@@ -246,120 +246,6 @@
           </div>
           <div id="js-content" class="content-ll">
             
-  
-    <article id="post-百度飞浆目标检测第一天" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/%E7%99%BE%E5%BA%A6%E9%A3%9E%E6%B5%86%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%AC%AC%E4%B8%80%E5%A4%A9/">百度飞浆目标检测第一天</a>
-    </h1>
-  
-
-        
-
-        
-        
-
-<span id="busuanzi_container_page_pv" 
-style='display:none' class="archive-article-date">
-    <i class="icon-smile icon"></i> 阅读数：
-    <span id="busuanzi_value_page_pv"></span>次
-</span>
-<a href="/2020/09/29/%E7%99%BE%E5%BA%A6%E9%A3%9E%E6%B5%86%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%AC%AC%E4%B8%80%E5%A4%A9/" class="archive-article-date">
-  	<time datetime="2020-09-29T08:47:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <a id="more"></a>
-
-<h1 id="必须先挂出来地址：PaddleDetection"><a href="#必须先挂出来地址：PaddleDetection" class="headerlink" title="必须先挂出来地址：PaddleDetection"></a>必须先挂出来地址：<a href="https://github.com/PaddlePaddle/PaddleDetection" target="_blank" rel="noopener">PaddleDetection</a></h1><h2 id="Ⅰ-课程介绍"><a href="#Ⅰ-课程介绍" class="headerlink" title="Ⅰ.课程介绍"></a>Ⅰ.课程介绍</h2><p>1、 ECCV2020目标检测双料冠军团队和PP-Yolo核心研发团队亲授</p>
-<p>2、深入剖析RCNN系列、YOLO系列、AnchorFree模型，带你扎实掌握目标检测</p>
-<p>3、深入剖析4大真实工业案例：路标检测、工业质检、电力巡检、商业超市密集商品检测</p>
-<p>4、手把手带打CVPR2020真实赛题</p>
-<h2 id="Ⅱ-学习心得"><a href="#Ⅱ-学习心得" class="headerlink" title="Ⅱ.学习心得"></a>Ⅱ.学习心得</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一开始本来准备好好学习一下，可中间夹着面试，只到课程第五天才开始。因为讨论群内热火朝天，一进nootbook实践，才发现这课可操作性这么强。所以决定好好把握一下</p>
-<h4 id="1-目标检测的发展"><a href="#1-目标检测的发展" class="headerlink" title="1.目标检测的发展"></a>1.目标检测的发展</h4><p>整体上看现在是端到端类算法（特别是yolo），工业应用落地更加广泛。<br>但是经过课程综述的学习，我感觉anchor-free很有潜力，rcnn类两阶段的算法因为在准确度上的优势，如果算力上又有大的提升，前景也不错。</p>
-<h4 id="2-模型如何优化"><a href="#2-模型如何优化" class="headerlink" title="2.模型如何优化"></a>2.模型如何优化</h4><p>虽然我还没有全部时间本次课程，但是我觉得本次课程最精华的地方就在对算法优化的理解上。目标检测的发展就是如此，从数据集上的操作，从loss定义上的优化，特征提取上的改进，那些里程碑的改进，引入anchor，加入resnet,加入pyramid pooling,从关键角点考虑等等，我想这些思想才是需要学习和借鉴的。</p>
-<p>当然，后续等学习完再更新。</p>
-<p>预习作业，也就是安装paddle类型的如下：<br><img src="https://ai-studio-static-online.cdn.bcebos.com/b80eb36ba20d4016b8b2265fd6f5437db7bbdb951b3d49e18d02964256cac157" alt=""></p>
-<p>一定注意切换环境（创建一个paddle环境比较好），然后是注意cd到安装包解压的地方，</p>
-<ul>
-<li><p>一般 在install （安装文件） -c <a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</a><br>就可以临时清华源安装，</p>
-</li>
-<li><p>亲测时conda install paddlepaddle失败了，换成pip就好了<br>以下都是在dos框命令：</p>
-</li>
-<li><p>安装txt里相应库：<br>pip install -r requirements.txt</p>
-</li>
-<li><p>然后检验：<br>python ppdet/modeling/tests/test_architectures.py</p>
-</li>
-</ul>
-<p>第一次实践作业:<br>比较简单，最重要的熟悉使用<br>总体上有以下几点需要注意的</p>
-<ul>
-<li>路径上的问题，例如可视化的实现，通过的是左栏可视化，添加的文件一般在dir文件夹里，（不过本质是训练是有参数即： –output_dir=output/ \，此为infer预测的输出结果地址）</li>
-<li>对配置文件的一些理解，所有的代码块都有，需要的是自由组合调用，但是必须要熟悉对应的命令，也就是paddle框架下的api</li>
-</ul>
-<p>未完继续，持续更新</p>
-
-      
-
-
-
-
-   
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">目标检测</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/29/%E7%99%BE%E5%BA%A6%E9%A3%9E%E6%B5%86%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%AC%AC%E4%B8%80%E5%A4%A9/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
     <article id="post-文远" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -810,6 +696,94 @@ style='display:none' class="archive-article-date">
 
 
   
+    <article id="post-你" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/29/%E4%BD%A0/">你</a>
+    </h1>
+  
+
+        
+
+        
+        
+
+<span id="busuanzi_container_page_pv" 
+style='display:none' class="archive-article-date">
+    <i class="icon-smile icon"></i> 阅读数：
+    <span id="busuanzi_value_page_pv"></span>次
+</span>
+<a href="/2020/08/29/%E4%BD%A0/" class="archive-article-date">
+  	<time datetime="2020-08-29T15:15:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <a id="more"></a>
+
+<h2 id="你是你，所以不行"><a href="#你是你，所以不行" class="headerlink" title="你是你，所以不行"></a>你是你，所以不行</h2>
+      
+
+
+
+
+   
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/29/%E4%BD%A0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
@@ -922,11 +896,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">个人简历</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">数据预处理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -942,14 +924,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">数据预处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">动态规划</a>
               </li>
              
@@ -962,15 +936,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机控制</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mnist</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">分类</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机控制</a>
               </li>
              
               <li class="article-tag-list-item">
