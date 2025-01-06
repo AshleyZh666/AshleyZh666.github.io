@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <%
+  var title = page.title;
+
+  if (is_archive()){
+    title = 'Archives';
+
+    if (is_month()){
+      title += ': ' + page.year + '/' + page.month;
+    } else if (is_year()){
+      title += ': ' + page.year;
+    }
+  } else if (is_category()){
+    title = 'Category: ' + page.category;
+  } else if (is_tag()){
+    title = 'Tag: ' + page.tag;
+  }
+  %>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="<%= config.url %>">
+  <title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <%- open_graph({twitter_id: theme.twitter, google_plus: theme.google_plus, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
+  <% if (theme.rss){ %>
+    <link rel="alternative" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
+  <% } %>
+  <% if (theme.favicon){ %>
+    <link rel="icon" href="<%- theme.favicon %>">
+  <% } %>
+  <%- partial('css') %>
+  <style type="text/css">
+  <% var defaultCtnBg = 'linear-gradient(200deg,#a0cfe4,#e8c37e)' %>
+    #container.show {
+      background: <%= theme.style && theme.style.slider ? theme.style.slider : defaultCtnBg %>;
+    }
+  </style>
+  <%- partial('google-analytics') %>
+  <%- partial('baidu-analytics') %>
+</head>
+
+
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js"></script>
+<script type="text/javascript">
+    L2Dwidget.init({
+		  model: {
+			jsonPath: '/./packages/live2d-widget-model-wanko/assets/wanko.model.json',			
+			scale: 1,
+			hHeadPos: 0.5,
+			vHeadPos: 0.618,
+			myDefine: []
+		  },
+		  display: {
+			superSample: 2,
+			width: 100,
+			height: 200,
+			position: 'right',
+			hOffset: 0,
+			vOffset: -20
+		  },
+		  mobile: {
+			show: true,
+			scale: 0.5,
+			motion: true
+		  },
+		  name: {
+			canvas: 'live2dcanvas',
+			div: 'live2d-widget'
+		  },
+		  react: {
+			opacityDefault: 0.7,
+			opacityOnHover: 0.2
+			
+		  },
+		  dev: {
+			log: false,
+			border: false,
+			mouseLog: false
+			
+		  }
+		});
+</script>
