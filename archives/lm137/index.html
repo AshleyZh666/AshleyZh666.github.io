@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>续命 · LM-137 · 零点档原型 v0.2.0</title>
-<!-- LM-137 《续命》demo v0.2.0 ｜ E1–E4 序章可玩 ｜ 单文件零依赖 ｜ v0.2：卒期遮蔽待解锁·添灯仪式(贪灯惩罚)·隐藏楼层·照片二态·在线No.0001·四段式终章 ｜ 音量4x ｜ 老浏览器兼容层 ｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
+<title>续命 · LM-137 · 零点档原型 v0.2.1</title>
+<!-- LM-137 《续命》demo v0.2.1 ｜ E1–E4 序章可玩 ｜ 单文件零依赖 ｜ v0.2.1：卡关保险(答案按钮)·匿名楼反转·双结局 ｜ v0.2：卒期遮蔽·添灯仪式·隐藏楼层·照片二态·在线No.0001·四段终章 ｜ 音量4x ｜ 老浏览器兼容层 -->
 <style>
 /* ============ 0. 壳层（游戏层）：暗、静、只留一盏灯 ============ */
 :root{
@@ -325,7 +325,7 @@ window.onerror=function(msg,src,line,col){
 <div id="glow"></div>
 
 <div id="shellbar">
-  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.2.0
+  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.2.1
     <span class="stp" id="stE1">E1</span><span class="stp" id="stE2">E2</span><span class="stp" id="stE3">E3</span>
   </span>
   <span>
@@ -482,7 +482,8 @@ window.onerror=function(msg,src,line,col){
           <div class="fh"><span class="no">6 楼</span><span>常守业 · 2008-05-21 03:12</span></div>
           <div class="fb">我是这台服务器的管理员。No.0001 是我姐。1976 年走的，那年我八岁。<br>
             平台关不关，随他们。规矩我应过人家：<b>只要还有一盏灯亮着，机房就不断电。</b><br>
-            另——昨晚 No.137 的访问记录里有<b>两个访客</b>。我只查到一个 IP。<br>
+            还有——别再用匿名发帖了，慧兰。你的馆，你随时可以来机房看。<br>
+            最后：昨晚 No.137 的访问记录里有<b>两个访客</b>。我只查到一个 IP。<br>
             <span style="color:#a8a288;">[该回复已被站务标记 · 2008-05-22]</span></div>
         </div>
         <div style="text-align:center;margin:16px 0;"><button class="bevel" id="btnBackMem" style="display:none;">返回纪念馆</button></div>
@@ -496,12 +497,18 @@ window.onerror=function(msg,src,line,col){
   <section id="hook">
     <div class="big" id="endTitle">第 3 夜。</div>
     <div id="endChain"></div>
-    <div class="hbtns"><button class="pbtn" id="btnLight" style="display:none;">点 亮 第 22 盏</button></div>
+    <div class="hbtns"><button class="pbtn" id="btnLight" style="display:none;">点 亮 第 22 盏</button><button class="pbtn" id="btnNoLight" style="display:none;">今 晚 不 点</button></div>
     <div id="endCard" style="display:none;text-align:center;">
       <div class="mid">灯亮了。<br>在线：2 人（您 · 她）<br>卒期：<b style="color:var(--amber-hi);">未　定</b><br><br>
         E4 起每日零点更新——21 封信，21 天，替她走完她没走完的路。</div>
       <div class="hbtns"><button class="pbtn" id="hookClues">查 看 馆 务 记 录</button><button class="pbtn" id="hookAgain">重 新 开 始</button></div>
-      <div class="tiny">demo v0.2 完 · 全程约 25–35 分钟 ｜ 剧本圣经 v0.2 ｜ 优化笔记（构图/降AI感）<br>（源代码里那句话，还在。）</div>
+      <div class="tiny">结局 A / 2（点灯）· demo v0.2 ｜ （源代码里那句话，还在。）</div>
+    </div>
+    <div id="endCardB" style="display:none;text-align:center;">
+      <div class="mid">第 22 盏，今晚没人添。<br>在线：1 人（您）<br><br>
+        灯影晃了一下，像是叹了口气。<br>—— 明晚零点，第 4 夜。</div>
+      <div class="hbtns"><button class="pbtn" id="hookCluesB">查 看 馆 务 记 录</button><button class="pbtn" id="hookAgainB">重 新 开 始</button></div>
+      <div class="tiny">结局 B / 2（不点）· demo v0.2 ｜ （源代码里那句话，还在。）</div>
     </div>
   </section>
 </div>
@@ -514,6 +521,7 @@ window.onerror=function(msg,src,line,col){
     <div class="ph"><div class="photo" id="capPhoto" style="cursor:default;width:268px;margin:0 auto 10px;"></div></div>
     <div class="btnrow">验证：<input type="text" id="capIn" maxlength="4"><button class="bevel" id="capGo">验 证</button></div>
     <div class="hint" id="capHint">提示：老式胶片相机会把日期印在照片的一角。墙面上的挂历，也写着答案。</div>
+    <div style="text-align:center;"><button class="bevel" id="capAns" style="display:none;font-size:11px;">卡住了 · 直接看答案</button></div>
   </div>
 </div></div>
 
@@ -523,6 +531,7 @@ window.onerror=function(msg,src,line,col){
     <div>密保问题（馆主 2003 年设置）：<br><b style="font-size:15px;">「小满从小最怕什么？」</b></div>
     <div class="btnrow">答案：<input type="text" id="secIn" maxlength="8"><button class="bevel" id="secGo">确 认</button></div>
     <div class="hint" id="secHint">提示：照片里，那孩子手里一直没放开过的东西。</div>
+    <div style="text-align:center;"><button class="bevel" id="secAns" style="display:none;font-size:11px;">卡住了 · 直接看答案</button></div>
   </div>
 </div></div>
 
@@ -743,6 +752,7 @@ function showMem(){
 /* 照片：注入唯一 SVG 源（遗像 + 验证码各一份容器） */
 $('memPhoto').innerHTML=PHOTO; $('capPhoto').innerHTML=PHOTO;
 $('photoWrap').onclick=function(){ if(S.e1)return; audioInit(); openM('mCap'); setTimeout(function(){$('capIn').focus();},80); };
+var capTries=0;
 $('capGo').onclick=function(){
   var v=($('capIn').value||'').trim();
   if(v==='1997'){ okSnd(); closeM('mCap'); S.e1=true; stepChip('stE1');
@@ -753,8 +763,11 @@ $('capGo').onclick=function(){
     setNarr('1997 年。这张照片，你没见过。手电筒的光，一直指着门口。门关着。');
   } else { errSnd(); var b=$('capBox'); b.classList.remove('shakeit'); void b.offsetWidth;
     b.classList.add('shakeit'); $('capIn').value='';
-    $('capHint').style.display='block'; }
+    capTries++;
+    $('capHint').style.display='block';
+    if(capTries>=3)$('capAns').style.display='inline-block'; }
 };
+$('capAns').onclick=function(){ $('capIn').value='1997'; $('capGo').click(); };
 $('capIn').onkeydown=function(e){ if(e.key==='Enter')$('capGo').click(); };
 
 /* ---- E2 密保 ---- */
@@ -778,10 +791,12 @@ $('secGo').onclick=function(){
   } else { errSnd(); var b=$('secBox'); b.classList.remove('shakeit'); void b.offsetWidth;
     b.classList.add('shakeit'); $('secIn').value='';
     secTries++;
+    $('secHint').style.display='block';
     if(secTries===2){ $('secHint').innerHTML='提示：照片里，那孩子手里一直没放开过的东西。'; }
     else if(secTries>=3){ $('secHint').innerHTML='提示：手电筒照着的，是门外的颜色。你在怕的，也是这个颜色。'; }
-    $('secHint').style.display='block'; }
+    if(secTries>=4)$('secAns').style.display='inline-block'; }
 };
+$('secAns').onclick=function(){ $('secIn').value='黑'; $('secGo').click(); };
 $('secIn').onkeydown=function(e){ if(e.key==='Enter')$('secGo').click(); };
 
 /* ---- E2.5 添灯仪式 ---- */
@@ -854,7 +869,7 @@ $('gapfloor').onclick=function(){ audioInit();
   addClue('c9'); okSnd();
   setNarr('2008-05-21。有人在问：那盏灯怎么还亮着。');
   setTimeout(function(){ $('floor6').style.display='block'; beep(294,.5,.04,'sine');
-    setNarr('常守业。守灯的人，有名有姓。'); },1800);
+    setNarr('匿名发帖的，是她。2008 年，她就发现灯不对劲了——她没声张。'); },1800);
   $('btnBackMem').style.display='inline-block';
   setTimeout(function(){ openM('mArch'); },3000); };
 $('archOk').onclick=function(){ clickSnd(); closeM('mArch'); };
@@ -943,7 +958,7 @@ function showEndStatic(){
   $('iewin').style.display='none'; $('dimmer').style.opacity='0'; $('zclock').style.display='none';
   $('hook').style.display='flex'; S.stage='hook'; save();
   $('endTitle').textContent='第 22 夜 · 00:00';
-  $('endChain').style.display='none'; $('btnLight').style.display='none';
+  $('endChain').style.display='none'; $('btnLight').style.display='none'; $('btnNoLight').style.display='none';
   $('endCard').style.display='block'; setNarr('灯亮了。'); window.scrollTo(0,0); }
 var endTimers=[];
 function endSequence(){
@@ -953,11 +968,18 @@ function endSequence(){
   var LINES=['第 21 盏灯，是留给今晚的。','第 22 盏，还空着。','添灯人那一栏，她生前只填了三个字——','<em>「她自己」。</em>'];
   LINES.forEach(function(t,i){ endTimers.push(setTimeout(function(){
     var p=document.createElement('p'); p.innerHTML=t; $('endChain').appendChild(p); beep(392,.25,.03,'sine'); },1400+i*2100)); });
-  endTimers.push(setTimeout(function(){ $('btnLight').style.display='inline-block'; },1400+LINES.length*2100)); }
+  endTimers.push(setTimeout(function(){
+    $('btnLight').style.display='inline-block'; $('btnNoLight').style.display='inline-block'; },1400+LINES.length*2100)); }
 $('btnLight').onclick=function(){ audioInit(); okSnd(); setTimeout(okSnd,320);
-  $('endChain').style.display='none'; this.style.display='none';
+  $('endChain').style.display='none'; this.style.display='none'; $('btnNoLight').style.display='none';
   $('endTitle').textContent='第 22 夜 · 00:00';
   $('endCard').style.display='block'; setNarr('灯，亮了。'); };
+$('btnNoLight').onclick=function(){ audioInit(); beep(147,.9,.04,'sine');
+  $('endChain').style.display='none'; this.style.display='none'; $('btnLight').style.display='none';
+  $('endTitle').textContent='第 3 夜 · 23:59';
+  $('endCardB').style.display='block'; setNarr('你把手电筒，放回了抽屉。'); };
+$('hookCluesB').onclick=function(){ $('clues').classList.add('show'); };
+$('hookAgainB').onclick=function(){ clearSave(); location.reload(); };
 $('hookClues').onclick=function(){ $('clues').classList.add('show'); };
 $('hookAgain').onclick=function(){ clearSave(); location.reload(); };
 
