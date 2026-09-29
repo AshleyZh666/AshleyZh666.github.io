@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.1/echarts.min.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <!-- <div id="main" style="width: 1200px;height:800px; background: rgb(248, 189, 199);"></div> -->
+    <div id="main" style="position:absolute;z-index:-1;width:100%;height:100%;top:0px;left:0px;font-size: 20px; background: rgb(245, 195, 232);"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+​
+        // 指定图表的配置项和数据
+        var option = {
+            backgroundColor: '#84AF9B',
+​
+            title: {
+                text: '实时电影票房',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ccc',
+                    fontSize: 30
+                }
+            },
+​
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+​
+            visualMap: {
+                // show: false,
+                min: 0,
+                max: 1000,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series: [
+                {
+                    name: '电影票房',
+                    type: 'pie',
+                    radius: '80%',
+                    center: ['50%', '50%'],
+                    data: [{'name': '送你一朵小红花', 'value': 960.24}, 
+                    {'name': '缉魂', 'value': 814.72}, 
+                    {'name': '许愿神龙', 'value': 684.15}, 
+                    {'name': '拆弹专家2', 'value': 391.72}, 
+                    {'name': '温暖的抱抱', 'value': 294.11},
+                    {'name': '心灵奇旅', 'value': 248.77}, 
+                    {'name': '没有过不去的年', 'value': 120.91},
+                     {'name': '叱咤风云', 'value': 97.78},
+                    {'name': '点点星光', 'value': 40.22},
+                    {'name': '老爷保号', 'value': 39.54},
+                    {'name': '其它', 'value': 86.82}].sort(function (a, b) { return a.value - b.value; }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(10, 10, 10, 0.8)',
+                        fontSize: 15
+                        // font-size: 12px;
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+​
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx) {
+                        return Math.random() * 100;
+                    }
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+</script>
+</body>
+</html>

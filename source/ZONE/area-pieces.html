@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl@1/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat@1/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/map/js/china.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/dist/extension/bmap.min.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+
+option = {
+            backgroundColor: '#84AF9B',
+
+            title: {
+                text: '实时电影票房',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ccc',
+                    fontSize: 30
+                }
+            },
+
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+
+            visualMap: {
+                // show: false,
+                min: 0,
+                max: 1000,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series: [
+                {
+                    name: '电影票房',
+                    type: 'pie',
+                    radius: '80%',
+                    center: ['50%', '50%'],
+                    data: [{'name': '送你一朵小红花', 'value': 960.24}, 
+                    {'name': '缉魂', 'value': 814.72}, 
+                    {'name': '许愿神龙', 'value': 684.15}, 
+                    {'name': '拆弹专家2', 'value': 391.72}, 
+                    {'name': '温暖的抱抱', 'value': 294.11},
+                    {'name': '心灵奇旅', 'value': 248.77}, 
+                    {'name': '没有过不去的年', 
+                    'value': 120.91}, {'name': '叱咤风云', 'value': 97.78}, {'name': '点点星光', 'value': 40.22}, {'name': '老爷保号', 'value': 39.54}, {'name': '其它', 'value': 86.82}].sort(function (a, b) { return a.value - b.value; }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(10, 10, 10, 0.8)',
+                        fontSize: 15
+                        // font-size: 12px;
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx) {
+                        return Math.random() * 100;
+                    }
+                }
+            ]
+        };;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>
