@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>续命 · LM-137 · 零点档原型 v0.1.3 兼容版</title>
-<!-- LM-137 《续命》demo v0.1.3 ｜ E1–E3 可玩 ｜ 单文件零依赖 ｜ 音量提升(master 4x) ｜ 修复孤儿IIFE ｜ 老浏览器兼容层 ｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
+<title>续命 · LM-137 · 零点档原型 v0.2.0</title>
+<!-- LM-137 《续命》demo v0.2.0 ｜ E1–E4 序章可玩 ｜ 单文件零依赖 ｜ v0.2：卒期遮蔽待解锁·添灯仪式(贪灯惩罚)·隐藏楼层·照片二态·在线No.0001·四段式终章 ｜ 音量4x ｜ 老浏览器兼容层 ｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
 <style>
 /* ============ 0. 壳层（游戏层）：暗、静、只留一盏灯 ============ */
 :root{
@@ -270,6 +270,19 @@ html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
 #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);background:#1c1913;color:var(--shell-ink);
   border:1px solid #2a251c;padding:9px 18px;border-radius:4px;font-size:13px;z-index:90;display:none;}
 @media (max-width:760px){ .mem-side{width:100%;max-width:520px;} .photo{width:280px;} }
+/* ---- v0.2 新增：隐藏楼层 / 照片第二状态 / 卒期翻转 / 终章 ---- */
+.gapfloor{margin:10px 0;padding:8px 10px;border:1px dashed #9c9478;color:#8a8270;font-size:11px;
+  letter-spacing:3px;text-align:center;cursor:pointer;background:#f3efe2;}
+.gapfloor:hover{color:var(--amber);border-color:var(--amber);}
+.photo .doorOpen{opacity:0;transition:opacity 6s ease;}
+.photo.s2 .doorOpen{opacity:1;}
+.photo.s2{filter:brightness(.95) saturate(.92);}
+.sr.death b.flip{color:#b0413a;}
+#endChain{min-height:170px;text-align:center;}
+#endChain p{margin:0 0 16px;font-size:15px;color:var(--shell-ink);letter-spacing:2px;line-height:2;animation:fadein .9s ease both;}
+#endChain p em{color:var(--amber-hi);font-style:normal;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
 /* ---- v0.1.1 兼容层：老浏览器无 flex gap 时用 margin 补距 ---- */
 .hbtns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
 @supports not (gap:1px){
@@ -312,7 +325,7 @@ window.onerror=function(msg,src,line,col){
 <div id="glow"></div>
 
 <div id="shellbar">
-  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.1.3
+  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.2.0
     <span class="stp" id="stE1">E1</span><span class="stp" id="stE2">E2</span><span class="stp" id="stE3">E3</span>
   </span>
   <span>
@@ -327,15 +340,15 @@ window.onerror=function(msg,src,line,col){
   <!-- 序章 -->
   <section id="pro">
     <h1>续 命</h1>
-    <div class="sub">LM-137 · 长明网 No.137 替身馆 · E1–E3 可玩</div>
+    <div class="sub">LM-137 · 长明网 No.137 · E1–E4 序章可玩</div>
     <div id="proBox"></div>
     <div class="hbtns">
       <button class="pbtn" id="btnStart">打 开 旧 手 机</button>
       <button class="pbtn" id="btnCont" style="display:none;">继 续 上 次</button>
     </div>
     <div class="tiny" style="color:#4a4335;font-size:11px;letter-spacing:2px;text-align:center;line-height:2.2;">
-      建议开声音 · 全程约 10 分钟 · 点击画面可加速对白<br>
-      （E1 老照片验证码 → E2 密保问题 → E3 论坛考古 → 零点事件）
+      建议开声音 · 全程约 25–35 分钟 · 点击画面可加速对白<br>
+      （E1 老照片验证码 → E2 密保推理 → 添灯仪式 → E3 论坛考古·隐藏楼层 → 零点事件 → 终章）
     </div>
   </section>
 
@@ -395,10 +408,10 @@ window.onerror=function(msg,src,line,col){
         <div class="mem-grid">
           <div class="mem-main">
             <div class="photo locked" id="photoWrap"><div id="memPhoto"></div><div class="cap" id="photoCap">馆主已设置照片隐私保护</div></div>
-            <div class="stele">
+            <div class="stele" id="steleBox">
               <div class="sh">讣 闻</div>
               <div class="sr">小满（乳名）<br>生于 <b>1996 年 5 月 21 日</b>（小满）</div>
-              <div class="sr death">卒于 <b id="deathDate">2026 年 5 月 21 日</b><br><span class="cnt" id="cnt21">距 今 21 天</span></div>
+              <div class="sr death">卒于 <b id="deathDate">■■■■ 年 ■ 月 ■ 日</b><br><span class="cnt" id="cnt21">由守灯人代续</span></div>
               <div class="memo">本馆信息每年小满前后由馆主更新一次</div>
             </div>
             <div class="lampbox">
@@ -407,6 +420,7 @@ window.onerror=function(msg,src,line,col){
               <div class="lamptx">长 明 灯 · 已 续 <b id="nights">2</b> 夜</div>
               <div id="oilCells"></div>
               <div class="oilnote">灯油由「守灯人」每日零点添加一格</div>
+              <div style="text-align:center;margin-top:8px;"><button class="bevel" id="btnOil">添 一 盏 灯</button></div>
             </div>
             <div class="bio">
               <div class="bh">生 平 简 介</div>
@@ -458,10 +472,18 @@ window.onerror=function(msg,src,line,col){
         <div class="fth">主题：【站务】关于『替身馆』模板的说明与争议　·　共 44 楼（末楼后被折叠）</div>
         <div class="fnote2" id="fTask">ⓘ 存档快照的楼层顺序已损坏。请<b>按时间先后</b>，依次点开每一楼。</div>
         <div id="floorList"></div>
+        <div class="gapfloor" id="gapfloor" style="display:none;" title="2008-05-21 · 该楼层缺失">· ·　中 间　缺　了　一　楼　· ·</div>
         <div class="folded" id="folded" style="display:none;">—— 下方有一条被折叠的回复（时间戳异常）· 点击展开 ——</div>
         <div class="floor l5" id="floor5" style="display:none;">
-          <div class="fh"><span class="no">折叠楼</span><span>匿名 · 2008-05-21 00:00:00</span></div>
-          <div class="fb">平台不是 2008 年就关了吗？<br>那 <b>No.137</b> 馆的长明灯——昨天夜里，怎么还亮着？<br><span style="color:#a8a288;">[站务未回复 · 主题已归档]</span></div>
+          <div class="fh"><span class="no">5 楼</span><span>匿名 · 2008-05-21 00:00:00</span></div>
+          <div class="fb">平台不是 2008 年就关了吗？<br>那 <b>No.137</b> 馆的长明灯——昨天夜里，怎么还亮着？</div>
+        </div>
+        <div class="floor l5" id="floor6" style="display:none;">
+          <div class="fh"><span class="no">6 楼</span><span>常守业 · 2008-05-21 03:12</span></div>
+          <div class="fb">我是这台服务器的管理员。No.0001 是我姐。1976 年走的，那年我八岁。<br>
+            平台关不关，随他们。规矩我应过人家：<b>只要还有一盏灯亮着，机房就不断电。</b><br>
+            另——昨晚 No.137 的访问记录里有<b>两个访客</b>。我只查到一个 IP。<br>
+            <span style="color:#a8a288;">[该回复已被站务标记 · 2008-05-22]</span></div>
         </div>
         <div style="text-align:center;margin:16px 0;"><button class="bevel" id="btnBackMem" style="display:none;">返回纪念馆</button></div>
       </div>
@@ -470,18 +492,17 @@ window.onerror=function(msg,src,line,col){
     <div class="sb"><span class="c1" id="statL">完成</span><span class="c2">Internet</span></div>
   </div>
 
-  <!-- 结尾钩子 -->
+  <!-- 终章 -->
   <section id="hook">
-    <div class="big">第 3 夜。</div>
-    <div class="mid">卒期：<b>2026-05-21</b> · 距今 <b>21</b> 天<br>
-      留言的人没有署名。灯油，是替你添的。<br>
-      —— 明晚零点，第 4 夜。</div>
-    <div class="hbtns">
-      <button class="pbtn" id="hookClues">查 看 馆 务 记 录</button>
-      <button class="pbtn" id="hookAgain">重 新 开 始</button>
+    <div class="big" id="endTitle">第 3 夜。</div>
+    <div id="endChain"></div>
+    <div class="hbtns"><button class="pbtn" id="btnLight" style="display:none;">点 亮 第 22 盏</button></div>
+    <div id="endCard" style="display:none;text-align:center;">
+      <div class="mid">灯亮了。<br>在线：2 人（您 · 她）<br>卒期：<b style="color:var(--amber-hi);">未　定</b><br><br>
+        E4 起每日零点更新——21 封信，21 天，替她走完她没走完的路。</div>
+      <div class="hbtns"><button class="pbtn" id="hookClues">查 看 馆 务 记 录</button><button class="pbtn" id="hookAgain">重 新 开 始</button></div>
+      <div class="tiny">demo v0.2 完 · 全程约 25–35 分钟 ｜ 剧本圣经 v0.2 ｜ 优化笔记（构图/降AI感）<br>（源代码里那句话，还在。）</div>
     </div>
-    <div class="tiny">demo 完 · E1–E3 可玩 ｜ 剧本圣经 v0.2 同步更新 ｜ 构图规范与降 AI 感图片手册见《LM-137_优化笔记》<br>
-      （这个 demo 的源代码里，也藏着同一句话。）</div>
   </section>
 </div>
 
@@ -502,6 +523,15 @@ window.onerror=function(msg,src,line,col){
     <div>密保问题（馆主 2003 年设置）：<br><b style="font-size:15px;">「小满从小最怕什么？」</b></div>
     <div class="btnrow">答案：<input type="text" id="secIn" maxlength="8"><button class="bevel" id="secGo">确 认</button></div>
     <div class="hint" id="secHint">提示：照片里，那孩子手里一直没放开过的东西。</div>
+  </div>
+</div></div>
+
+<div class="mwrap" id="mOil"><div class="wbox" id="oilBox">
+  <div class="wt"><span>守灯规矩 - 长明网</span><span class="x" data-close="mOil">×</span></div>
+  <div class="wc">
+    <div>『替身馆』添灯规矩（馆主 2003 年设置）：</div>
+    <div style="margin:8px 0 4px;line-height:2.1;">· 每夜零点后，一次只添<b>一</b>盏<br>· 油只可加，不可减<br>· <b>贪多者，卒期自减</b></div>
+    <div class="btnrow" style="justify-content:center;"><button class="bevel" id="oilGo">确 认 添 灯</button><button class="bevel" data-close="mOil">再 想 想</button></div>
   </div>
 </div></div>
 
@@ -534,21 +564,23 @@ window.onerror=function(msg,src,line,col){
 "use strict";
 /* ================= state & save ================= */
 var CLUES=[
-  {id:'c1', f:'F2', t:'卒期 2026-05-21，距今天 21 天——一座活人的纪念馆，忌日在倒计时'},
+  {id:'c1', f:'F2', t:'卒期 2026-05-21，由守灯人代续——距今天，21 天'},
   {id:'c2', f:'F2', t:'生日 = 小满（1996-05-21）。卒期和生日，是同一天'},
-  {id:'c3', f:'F6', t:'遗像摄于 1997：老家堂屋，孩子背对镜头，手里攥着手电筒'},
-  {id:'c4', f:'F4', t:'馆建于 2003-10-06，创建人：周慧兰；此后每年小满前后被编辑，共 22 次'},
+  {id:'c3', f:'F6', t:'遗像摄于 1997：老家堂屋，孩子背对镜头，手电筒的光一直指着门口'},
+  {id:'c4', f:'F4', t:'馆建于 2003-10-06，创建人：周慧兰；编辑记录 22 次，每年小满前后更新'},
   {id:'c5', f:'F8', t:'2003 年 10 月的高热之夜（41.2℃，县医院走廊）——你对这段人生毫无记忆'},
-  {id:'c6', f:'F6', t:'密保答案：你怕黑。这是妈妈在 2003 年就替你记下的'},
+  {id:'c6', f:'F4', t:'密保答案：你怕黑。这是妈妈在 2003 年就替你记下的'},
   {id:'c7', f:'F8', t:'替身馆 = 「替生牌」旧俗：给病重的孩子立一个"已去"的名分，骗来收魂的'},
   {id:'c8', f:'F5', t:'官方故事：替身馆模板 2008-01-01 停用，全站 2008 年关闭'},
-  {id:'c9', f:'F5', t:'折叠楼（2008-05-21 匿名）：No.137 的灯，在平台"关闭"之后还亮着'},
-  {id:'c10',f:'元①',t:'页面源码留言：「如果你看到这行字，说明你妈托对了人。」——署名：守灯人'}
+  {id:'c9', f:'F5', t:'折叠楼：管理员常守业——No.0001 是他 1976 年走的姐姐；平台关了机房不断电；那晚 No.137 有两个访客，只查到一个 IP'},
+  {id:'c10',f:'元①',t:'源码留言：「如果你看到这行字，说明你妈托对了人。」——署名：守灯人'},
+  {id:'c11',f:'F2', t:'「卒期由守灯人代续，勿改」——她替你定下的日子，谁都不许动'},
+  {id:'c12',f:'元②',t:'最后一次编辑是 2025-12-21，她走后第七天。改的就是卒期——这座馆，寿主是你'}
 ];
 var S={stage:'prologue',clues:[],e1:false,e2:false,e3:false,zero:false,snd:true,memLoaded:false};
-function save(){try{localStorage.setItem('lm137_v01',JSON.stringify(S));}catch(e){}}
-function load(){try{return JSON.parse(localStorage.getItem('lm137_v01'));}catch(e){return null;}}
-function clearSave(){try{localStorage.removeItem('lm137_v01');}catch(e){}}
+function save(){try{localStorage.setItem('lm137_v02',JSON.stringify(S));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem('lm137_v02'));}catch(e){return null;}}
+function clearSave(){try{localStorage.removeItem('lm137_v02');localStorage.removeItem('lm137_v01');}catch(e){}}
 function $(id){return document.getElementById(id);}
 function toast(s){var t=$('toast');t.textContent=s;t.style.display='block';
   clearTimeout(t._x);t._x=setTimeout(function(){t.style.display='none';},2200);}
@@ -601,6 +633,11 @@ var PHOTO='<svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">'+
 '<rect x="430" y="70" width="140" height="242" fill="#171512"/>'+
 '<rect x="546" y="70" width="24" height="242" fill="#2a2620"/>'+
 '<polygon points="546,312 570,312 594,346 560,346" fill="#cfc4a8" opacity="0.16"/>'+
+'<g class="doorOpen">'+
+'<rect x="436" y="70" width="110" height="242" fill="#080706"/>'+
+'<ellipse cx="452" cy="228" rx="10" ry="36" fill="#d8cdb2" opacity="0.38"/>'+
+'<polygon points="436,312 546,312 570,346 452,346" fill="#cfc4a8" opacity="0.22"/>'+
+'</g>'+
 /* 挂历（墙上，1997 年 · 五月 · 21 · 小满） */
 '<g transform="rotate(-1.2 152 120)">'+
 '<rect x="90" y="44" width="124" height="154" fill="#7c7059"/>'+
@@ -644,8 +681,10 @@ var PRO=[
  '母亲走后的第一百三十七天。',
  '房子下个月交钥匙。你回来收拾她的遗物。',
  '抽屉最里面，是那台旧手机——智能手机给她买过，她学不会，一直用这台老的。',
- '充电口有点松。你按了按，插上电。',
- '屏幕，居然亮了。'
+ '充电口有点松。你按了按，插上电。屏幕，居然亮了。',
+ '书签栏里只有一个条目，存于 2003 年 10 月 6 日。',
+ '你小时候碰过一次这台手机，点了那个书签，被她打着手心骂了一晚上。',
+ '现在，没有人拦你了。'
 ];
 var proIdx=0,proTyping=null;function typeLine(el,text,done){ el.textContent=''; var i=0;
   proTyping={i:setInterval(function(){ el.textContent=text.slice(0,++i);
@@ -697,7 +736,7 @@ function showMem(){
   $('navBack').disabled=false;
   setNarr('纪念「小满」。建馆的人，是她。');
   S.memLoaded=true; S.stage='mem'; save();
-  addClue('c1'); addClue('c4');
+  addClue('c4');
   renderOil(2); $('nights').textContent='2';
   window.scrollTo(0,0);
 }
@@ -711,7 +750,7 @@ $('capGo').onclick=function(){
     $('photoCap').textContent='摄于 1997 年 · 老家堂屋（馆主 2003 年上传）';
     $('iv1').style.display='block';
     addClue('c2'); addClue('c3'); save();
-    setNarr('1997 年。这张照片，你没见过。');
+    setNarr('1997 年。这张照片，你没见过。手电筒的光，一直指着门口。门关着。');
   } else { errSnd(); var b=$('capBox'); b.classList.remove('shakeit'); void b.offsetWidth;
     b.classList.add('shakeit'); $('capIn').value='';
     $('capHint').style.display='block'; }
@@ -729,6 +768,7 @@ function unlockBio(){
     '<div style="margin-top:10px;font-size:12px;color:#24409c;text-decoration:underline;cursor:pointer;" id="lnkForum">相关讨论：纪念论坛 · 2003 年《关于「替身馆」模板的说明》（存档快照）▸</div>';
   $('lnkForum').onclick=function(){ showForum(); };
 }
+var secTries=0;
 $('secGo').onclick=function(){
   var v=($('secIn').value||'').replace(/\s/g,'');
   if(v && v.indexOf('黑')>=0 && v.length<=6){ okSnd(); closeM('mSec'); S.e2=true; stepChip('stE2');
@@ -737,9 +777,37 @@ $('secGo').onclick=function(){
     setNarr('七岁那年的事，你一点印象都没有。');
   } else { errSnd(); var b=$('secBox'); b.classList.remove('shakeit'); void b.offsetWidth;
     b.classList.add('shakeit'); $('secIn').value='';
+    secTries++;
+    if(secTries===2){ $('secHint').innerHTML='提示：照片里，那孩子手里一直没放开过的东西。'; }
+    else if(secTries>=3){ $('secHint').innerHTML='提示：手电筒照着的，是门外的颜色。你在怕的，也是这个颜色。'; }
     $('secHint').style.display='block'; }
 };
 $('secIn').onkeydown=function(e){ if(e.key==='Enter')$('secGo').click(); };
+
+/* ---- E2.5 添灯仪式 ---- */
+$('btnOil').onclick=function(){ audioInit(); clickSnd(); openM('mOil'); };
+$('oilGo').onclick=function(){ audioInit();
+  if(S._oilLit){
+    if(S._unmask){ steleFlip(); } else { errSnd(); toast('规矩：一次只添一盏。'); }
+    closeM('mOil'); return; }
+  okSnd(); closeM('mOil'); S._oilLit=true; save();
+  $('flame').classList.add('big'); renderOil(3); $('nights').textContent='3';
+  setTimeout(function(){ $('flame').classList.remove('big'); },1800);
+  $('btnOil').textContent='今夜油已添 · 待明日零点';
+  var g=document.createElement('div'); g.className='it new';
+  g.innerHTML='<span class="who">我</span>替她，把今晚的灯添上了。<span style="color:#a8a288;">　2026-04-30 23:59</span>';
+  $('gbook').appendChild(g);
+  setNarr('第 3 格油，是你自己添的。规矩说：油只可加，不可减。');
+  toast('已添灯 · 今夜'); };
+function steleFlip(){
+  var el=$('deathDate'), box=$('steleBox');
+  box.classList.remove('shakeit'); void box.offsetWidth; box.classList.add('shakeit');
+  errSnd(); zeroHum();
+  var old=el.textContent;
+  el.classList.add('flip'); el.textContent='2026 年 5 月 14 日';
+  setNarr('贪多者，卒期自减。');
+  setTimeout(function(){ el.textContent=old; el.classList.remove('flip');
+    setNarr('……刚才，卒期自己动了。往回，动了七天。'); },3400); }
 
 /* ---- E3 论坛考古 ---- */
 $('navForum1').onclick=function(){ audioInit(); clickSnd(); showForum(); };
@@ -772,7 +840,8 @@ function showForum(){
       nextFloor++;
       if(nextFloor===1){ addClue('c7'); }
       if(nextFloor===4){ addClue('c8');
-        setTimeout(function(){ $('folded').style.display='block'; },500); }
+        setTimeout(function(){ $('gapfloor').style.display='block';
+          setNarr('楼层号，从 3 直接跳到了 5。中间那楼，去哪了？'); },500); }
       if(nextFloor===4) setNarr('模板 2008 年就停用了。可你的馆，昨晚还在更新。');
     };
     list.appendChild(d);
@@ -780,12 +849,14 @@ function showForum(){
   $('folded').style.display='none'; $('floor5').style.display='none';
   $('btnBackMem').style.display='none'; nextFloor=0;
 }
-$('folded').onclick=function(){ audioInit(); clickSnd();
-  $('folded').style.display='none'; $('floor5').style.display='block';
+$('gapfloor').onclick=function(){ audioInit();
+  $('gapfloor').style.display='none'; $('floor5').style.display='block'; clickSnd();
   addClue('c9'); okSnd();
-  $('btnBackMem').style.display='inline-block';
   setNarr('2008-05-21。有人在问：那盏灯怎么还亮着。');
-  setTimeout(function(){ openM('mArch'); },1300); };
+  setTimeout(function(){ $('floor6').style.display='block'; beep(294,.5,.04,'sine');
+    setNarr('常守业。守灯的人，有名有姓。'); },1800);
+  $('btnBackMem').style.display='inline-block';
+  setTimeout(function(){ openM('mArch'); },3000); };
 $('archOk').onclick=function(){ clickSnd(); closeM('mArch'); };
 $('lnkForum2').onclick=function(){ audioInit(); showForum(); };
 $('btnBackMem').onclick=function(){ clickSnd(); showMem(); zeroEvent(); };
@@ -808,28 +879,37 @@ function zeroEvent(){
 function zeroSequence(){
   var T=function(ms,fn){ zeroTimers.push(setTimeout(fn,ms)); };
   zeroHum();
-  T(1200,function(){ /* 访客记录插入 */
+  T(1200,function(){ /* 访客记录插入 + 在线 2 人 */
     var d=document.createElement('div'); d.className='fresh';
     d.innerHTML='<span class="tm">2026-04-30 00:00</span><br><span class="kp">守灯人</span> · 进入纪念馆';
     $('vlog').insertBefore(d,$('vlog').firstChild);
     $('online').textContent='2 人（您 · 守灯人）';
     beep(520,.3,.03,'sine'); });
-  T(3200,function(){ /* 灯油 +1 */
-    $('flame').classList.add('big'); renderOil(3);
-    var n=$('nights'); n.textContent='3'; beep(760,.5,.035,'sine');
-    T(1600,function(){ $('flame').classList.remove('big'); }); });
-  T(5400,function(){ /* 留言板新条目 */
-    var d=document.createElement('div'); d.className='it new';
-    d.innerHTML='<span class="who">守灯人</span>第 3 夜<span style="color:#a8a288;">　2026-04-30 00:00</span>';
-    $('gbook').appendChild(d); beep(440,.4,.03,'sine'); });
-  T(8200,function(){ /* 菜单栏闪烁提示 */
-    $('mView').classList.add('blink');
-    setNarr('浏览器的菜单栏，好像在提醒你什么。');
-    toast('试试「查看 → 源文件」'); });
-  T(14000,function(){ $('mView').classList.remove('blink'); });
-  T(22000,function(){ toast('菜单栏的「查看」，又闪了一下。'); $('mView').classList.add('blink'); });
+  T(3600,function(){ /* 灯油：自己添 vs 守灯人代添 */
+    if(S._oilLit){
+      var g2=document.createElement('div'); g2.className='it new';
+      g2.innerHTML='<span class="who">守灯人</span>看得到。很好。<span style="color:#a8a288;">　2026-04-30 00:01</span>';
+      $('gbook').appendChild(g2); beep(392,.5,.03,'sine');
+      setNarr('你添的灯，有人看见了。');
+    } else {
+      $('flame').classList.add('big'); renderOil(3); $('nights').textContent='3';
+      T(1600,function(){ $('flame').classList.remove('big'); });
+      setNarr('你没添灯。零点一到，灯油自己涨了一格。'); }
+    beep(760,.5,.035,'sine'); });
+  T(6400,function(){ if(!S._oilLit){ var d=document.createElement('div'); d.className='it new';
+      d.innerHTML='<span class="who">守灯人</span>第 3 夜<span style="color:#a8a288;">　2026-04-30 00:00</span>';
+      $('gbook').appendChild(d); beep(440,.4,.03,'sine'); } });
+  T(10000,function(){ if(S.e3){ $('photoWrap').classList.add('s2'); noiseBurst(.8,.028,320);
+      setNarr('照片……好像跟刚才不一样。再看一眼。'); } });
+  T(14500,function(){ if(S.e3){ var o=$('online'); o.textContent='3 人（您 · 守灯人 · No.0001）';
+      o.style.color='#b0413a'; errSnd();
+      setNarr('第三个访客，编号 No.0001——1976 年就走了的那位。'); } });
+  T(20000,function(){ $('mView').classList.add('blink');
+    setNarr('浏览器的菜单栏，好像在提醒你什么。'); toast('试试「查看 → 源文件」'); });
   T(26000,function(){ $('mView').classList.remove('blink'); });
-  T(32000,function(){ if(!S._hookDone){ setNarr('你总觉得，刚才错过了什么。'); showHook(); } });
+  T(33000,function(){ toast('菜单栏的「查看」，又闪了一下。'); $('mView').classList.add('blink'); });
+  T(38000,function(){ $('mView').classList.remove('blink'); });
+  T(46000,function(){ if(!S._hookDone){ setNarr('你总觉得，刚才错过了什么。'); toast('「查看 → 源文件」'); } });
 }
 $('mView').onclick=function(e){ e.stopPropagation();
   var m=$('viewMenu'); m.style.display=(m.style.display==='block')?'none':'block'; };
@@ -858,22 +938,49 @@ var SRC_TEXT='<html>\n<head><title>纪念「小满」 - 长明网</title>\n<meta
 '</table>\n\n</body>\n</html>';
 $('srcText').textContent='（正在打开源文件……）';
 
-/* ---- 结尾钩子 ---- */
-function showHook(){
-  $('iewin').style.display='none'; $('dimmer').style.opacity='0';
-  $('zclock').style.display='none';
+/* ---- 终章 ---- */
+function showEndStatic(){
+  $('iewin').style.display='none'; $('dimmer').style.opacity='0'; $('zclock').style.display='none';
   $('hook').style.display='flex'; S.stage='hook'; save();
-  setNarr('明晚零点，第 4 夜。');
-  window.scrollTo(0,0);
-}
+  $('endTitle').textContent='第 22 夜 · 00:00';
+  $('endChain').style.display='none'; $('btnLight').style.display='none';
+  $('endCard').style.display='block'; setNarr('灯亮了。'); window.scrollTo(0,0); }
+var endTimers=[];
+function endSequence(){
+  $('iewin').style.display='none'; $('dimmer').style.opacity='0'; $('zclock').style.display='none';
+  $('hook').style.display='flex'; S.stage='hook'; save(); window.scrollTo(0,0); setNarr('');
+  $('endCard').style.display='none'; $('endChain').style.display='block'; $('endChain').innerHTML='';
+  var LINES=['第 21 盏灯，是留给今晚的。','第 22 盏，还空着。','添灯人那一栏，她生前只填了三个字——','<em>「她自己」。</em>'];
+  LINES.forEach(function(t,i){ endTimers.push(setTimeout(function(){
+    var p=document.createElement('p'); p.innerHTML=t; $('endChain').appendChild(p); beep(392,.25,.03,'sine'); },1400+i*2100)); });
+  endTimers.push(setTimeout(function(){ $('btnLight').style.display='inline-block'; },1400+LINES.length*2100)); }
+$('btnLight').onclick=function(){ audioInit(); okSnd(); setTimeout(okSnd,320);
+  $('endChain').style.display='none'; this.style.display='none';
+  $('endTitle').textContent='第 22 夜 · 00:00';
+  $('endCard').style.display='block'; setNarr('灯，亮了。'); };
 $('hookClues').onclick=function(){ $('clues').classList.add('show'); };
 $('hookAgain').onclick=function(){ clearSave(); location.reload(); };
 
 /* ---- 弹窗 / 线索板 / 杂项 ---- */
 function openM(id){ $(id).classList.add('show'); }
 function closeM(id){ $(id).classList.remove('show');
-  if(id==='mSrc'&&S.zero&&!S._hookDone){ S._hookDone=true; okSnd();
-    setNarr('……原来，是你妈托的人。'); setTimeout(showHook,700); } }
+  if(id==='mSrc'&&S.zero&&!S._hookDone){ S._hookDone=true; okSnd(); unmaskStele(); } }
+function unmaskStele(){
+  showMem();
+  var el=$('deathDate');
+  el.textContent='2026 年 5 月 21 日';
+  $('cnt21').textContent='距 今 21 天';
+  var box=$('steleBox'); box.classList.remove('shakeit'); void box.offsetWidth; box.classList.add('shakeit');
+  addClue('c1'); beep(196,.7,.05,'sine');
+  S._unmask=true; save();
+  var T=function(ms,fn){ zeroTimers.push(setTimeout(fn,ms)); };
+  T(2200,function(){ setNarr('卒期，显出来了：2026 年 5 月 21 日。'); });
+  T(5000,function(){ setNarr('今天，是 2026 年 4 月 30 日。距今——21 天。'); addClue('c11'); });
+  T(8200,function(){ setNarr('你忽然想起来：你的生日，也是 5 月 21 日。小满那天。'); });
+  T(11500,function(){ setNarr('页面顶上写着「编辑记录：22 次」。最后那次的日期，是 2025-12-21——她走后第七天。'); });
+  T(15200,function(){ setNarr('她改掉的，就是这个日期。'); });
+  T(17800,function(){ setNarr('这不是替身馆。这是你的寿数——她在用这座馆，给你续命。'); addClue('c12'); });
+  T(21000,function(){ endSequence(); }); }
 var _cl=document.querySelectorAll('.wbox .x, [data-close]');
 for(var _ci=0;_ci<_cl.length;_ci++)(function(el){
   el.addEventListener('click',function(){ var id=el.getAttribute('data-close'); if(id)closeM(id); });
@@ -906,26 +1013,29 @@ $('navBack').onclick=function(){ audioInit(); clickSnd(); if(curPage==='pgForum'
   if(s.stage&&s.stage!=='prologue'){ $('btnCont').style.display='inline-block'; }
 })();
 $('btnStart').onclick=function(){ audioInit(); clearSave();
-  S={stage:'prologue',clues:[],e1:false,e2:false,e3:false,zero:false,snd:S.snd,memLoaded:false};
+  S={stage:'prologue',clues:[],e1:false,e2:false,e3:false,zero:false,snd:S.snd,memLoaded:false,_oilLit:false,_unmask:false};
   S._hookDone=false; save();
   proIdx=0; $('proBox').innerHTML='';
   proNext(); };
 function applyE1State(){ var ph=$('photoWrap'); ph.classList.remove('locked'); ph.classList.add('unlocked');
   $('photoCap').textContent='摄于 1997 年 · 老家堂屋（馆主 2003 年上传）'; $('iv1').style.display='block'; }
 function applyZeroState(){ renderOil(3); $('nights').textContent='3';
+  $('btnOil').textContent='今夜油已添 · 待明日零点';
   var d=document.createElement('div'); d.className='fresh';
   d.innerHTML='<span class="tm">2026-04-30 00:00</span><br><span class="kp">守灯人</span> · 进入纪念馆';
   $('vlog').insertBefore(d,$('vlog').firstChild);
-  $('online').textContent='2 人（您 · 守灯人）';
+  $('online').textContent='3 人（您 · 守灯人'+(S.e3?' · No.0001':'')+'）';
   var g=document.createElement('div'); g.className='it new';
   g.innerHTML='<span class="who">守灯人</span>第 3 夜<span style="color:#a8a288;">　2026-04-30 00:00</span>';
-  $('gbook').appendChild(g); }
+  $('gbook').appendChild(g);
+  if(S.e3)$('photoWrap').classList.add('s2');
+  if(S._unmask){ $('deathDate').textContent='2026 年 5 月 21 日'; $('cnt21').textContent='距 今 21 天'; } }
 $('btnCont').onclick=function(){ audioInit();
   var s=load(); if(!s)return;
   S=s; S.snd=(s.snd!==false); $('btnSnd').textContent=S.snd?'🔊 音效':'🔇 静音';
   updClues();
   if(s.e1)stepChip('stE1'); if(s.e2)stepChip('stE2'); if(s.e3)stepChip('stE3');
-  if(s.stage==='hook'){ proIdx=PRO.length; $('pro').style.display='none'; showHook(); return; }
+  if(s.stage==='hook'){ proIdx=PRO.length; $('pro').style.display='none'; showEndStatic(); return; }
   proIdx=PRO.length; startLogin();
   if(s.e1)applyE1State();
   if(s.e2)unlockBio();
