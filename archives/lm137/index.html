@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>续命 · LM-137 · 零点档原型 v0.1</title>
-<!-- LM-137 《续命》demo v0.1 ｜ E1–E3 可玩 ｜ 单文件零依赖 ｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
+<title>续命 · LM-137 · 零点档原型 v0.1.1 兼容版</title>
+<!-- LM-137 《续命》demo v0.1.1 ｜ E1–E3 可玩 ｜ 单文件零依赖 ｜ 老浏览器兼容层（NodeList.forEach / inset / flex-gap / onerror 诊断条）｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
 <style>
 /* ============ 0. 壳层（游戏层）：暗、静、只留一盏灯 ============ */
 :root{
@@ -17,7 +17,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
   font-family:"SimSun","Songti SC",serif;}
-#glow{position:fixed;inset:0;pointer-events:none;z-index:0;
+#glow{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:0;
   background:radial-gradient(ellipse 70% 50% at 50% 42%, rgba(200,134,42,.07), transparent 70%);}
 #shellbar{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;
   padding:10px 16px;font-size:12px;color:var(--shell-dim);border-bottom:1px solid #1c1913;letter-spacing:1px;}
@@ -138,7 +138,7 @@ html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
 .photo svg{display:block;width:100%;height:auto;transition:filter 1.2s ease;}
 .photo .cap{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;color:#6a6250;letter-spacing:1px;}
 .photo.locked svg{filter:blur(7px) grayscale(.9) brightness(.92);}
-.photo.locked::before{content:"此照片已由馆主加密 ▸ 点击验证";position:absolute;inset:11px 11px 40px;
+.photo.locked::before{content:"此照片已由馆主加密 ▸ 点击验证";position:absolute;top:11px;right:11px;bottom:40px;left:11px;
   display:flex;align-items:center;justify-content:center;font-size:12px;color:#5a5344;letter-spacing:2px;z-index:2;}
 /* 灵位生卒 */
 .stele{width:330px;margin:14px auto 0;border:1px solid var(--tbl);background:#fbf8ee;text-align:center;}
@@ -214,7 +214,7 @@ html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
 .l5 .fh .no{color:var(--amber);}
 
 /* ============ 7. 弹窗（Win 经典灰 = 时代容器） ============ */
-.mwrap{position:fixed;inset:0;background:rgba(10,9,7,.72);z-index:60;display:none;
+.mwrap{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(10,9,7,.72);z-index:60;display:none;
   align-items:center;justify-content:center;padding:16px;}
 .mwrap.show{display:flex;}
 .wbox{background:#ece9d8;border:1px solid #0831d9;border-radius:6px 6px 2px 2px;
@@ -238,7 +238,7 @@ html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
 .wbox.shakeit{animation:shk .3s;}
 
 /* ============ 8. 零点时刻 ============ */
-#dimmer{position:fixed;inset:0;background:#050403;opacity:0;pointer-events:none;z-index:40;transition:opacity 9s linear;}
+#dimmer{position:fixed;top:0;right:0;bottom:0;left:0;background:#050403;opacity:0;pointer-events:none;z-index:40;transition:opacity 9s linear;}
 #zclock{position:fixed;right:22px;bottom:20px;z-index:45;display:none;
   font-family:"Courier New",monospace;font-size:20px;color:#9a8c6e;letter-spacing:3px;
   background:rgba(10,9,7,.8);border:1px solid #2a251c;padding:6px 14px;}
@@ -270,9 +270,35 @@ html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
 #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);background:#1c1913;color:var(--shell-ink);
   border:1px solid #2a251c;padding:9px 18px;border-radius:4px;font-size:13px;z-index:90;display:none;}
 @media (max-width:760px){ .mem-side{width:100%;max-width:520px;} .photo{width:280px;} }
+/* ---- v0.1.1 兼容层：老浏览器无 flex gap 时用 margin 补距 ---- */
+.hbtns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+@supports not (gap:1px){
+  .hbtns{margin-left:-14px;}
+  .hbtns>*{margin-left:14px;margin-bottom:10px;}
+  .login-grid{margin-left:-14px;}
+  .login-grid>*{margin-left:14px;}
+  .mem-grid{margin-left:-16px;}
+  .mem-grid>*{margin-left:16px;}
+  .logbox .row>*+*{margin-left:8px;}
+  #oilCells i+i{margin-left:3px;}
+  .wc .btnrow>*+*{margin-left:10px;}
+  .tl .nav>*+*{margin-left:3px;}
+  .addr>*+*{margin-left:5px;}
+  .floor .fh>*+*{margin-left:4px;}
+  #pro{gap:0;}
+  #proBox{margin-bottom:26px;}
+  #pro h1{margin-bottom:10px;}
+}
 </style>
 </head>
 <body>
+<div id="compatTip" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:999;background:#33270f;color:#e8c87a;font:12px/1.7 'Microsoft YaHei',sans-serif;padding:7px 12px;border-top:1px solid #6b5326;"></div>
+<script>
+window.onerror=function(msg,src,line,col){
+  var t=document.getElementById('compatTip');
+  if(t){t.style.display='block';t.innerHTML='⚠ 环境提示：浏览器较旧，第 '+(line||'?')+' 行脚本异常（'+String(msg).slice(0,80)+'）。游戏可能不完整——请截图此条发给作者。';}
+  return false;};
+</script>
 <!--
   ┌──────────────────────────────────────────────┐
   │  小满：                                      │
@@ -286,7 +312,7 @@ html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
 <div id="glow"></div>
 
 <div id="shellbar">
-  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.1
+  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.1.1
     <span class="stp" id="stE1">E1</span><span class="stp" id="stE2">E2</span><span class="stp" id="stE3">E3</span>
   </span>
   <span>
@@ -303,7 +329,7 @@ html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
     <h1>续 命</h1>
     <div class="sub">LM-137 · 长明网 No.137 替身馆 · E1–E3 可玩</div>
     <div id="proBox"></div>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+    <div class="hbtns">
       <button class="pbtn" id="btnStart">打 开 旧 手 机</button>
       <button class="pbtn" id="btnCont" style="display:none;">继 续 上 次</button>
     </div>
@@ -450,7 +476,7 @@ html,body{margin:0;padding:0;background:var(--shell-bg);color:var(--shell-ink);
     <div class="mid">卒期：<b>2026-05-21</b> · 距今 <b>21</b> 天<br>
       留言的人没有署名。灯油，是替你添的。<br>
       —— 明晚零点，第 4 夜。</div>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+    <div class="hbtns">
       <button class="pbtn" id="hookClues">查 看 馆 务 记 录</button>
       <button class="pbtn" id="hookAgain">重 新 开 始</button>
     </div>
@@ -848,8 +874,10 @@ function openM(id){ $(id).classList.add('show'); }
 function closeM(id){ $(id).classList.remove('show');
   if(id==='mSrc'&&S.zero&&!S._hookDone){ S._hookDone=true; okSnd();
     setNarr('……原来，是你妈托的人。'); setTimeout(showHook,700); } }
-document.querySelectorAll('.wbox .x, [data-close]').forEach(function(el){
-  el.addEventListener('click',function(){ var id=el.getAttribute('data-close'); if(id)closeM(id); }); });
+var _cl=document.querySelectorAll('.wbox .x, [data-close]');
+for(var _ci=0;_ci<_cl.length;_ci++)(function(el){
+  el.addEventListener('click',function(){ var id=el.getAttribute('data-close'); if(id)closeM(id); });
+})(_cl[_ci]);
 function stepChip(id){ $(id).classList.add('done'); }
 function addClue(id){
   if(S.clues.indexOf(id)>=0)return;
