@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>续命 · LM-137 · 零点档原型 v0.1.1 兼容版</title>
-<!-- LM-137 《续命》demo v0.1.1 ｜ E1–E3 可玩 ｜ 单文件零依赖 ｜ 老浏览器兼容层（NodeList.forEach / inset / flex-gap / onerror 诊断条）｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
+<title>续命 · LM-137 · 零点档原型 v0.1.2 兼容版</title>
+<!-- LM-137 《续命》demo v0.1.2 ｜ E1–E3 可玩 ｜ 单文件零依赖 ｜ 修复：孤儿IIFE致全脚本SyntaxError ｜ 老浏览器兼容层（NodeList.forEach / inset / flex-gap / onerror 诊断条）｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
 <style>
 /* ============ 0. 壳层（游戏层）：暗、静、只留一盏灯 ============ */
 :root{
@@ -312,7 +312,7 @@ window.onerror=function(msg,src,line,col){
 <div id="glow"></div>
 
 <div id="shellbar">
-  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.1.1
+  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.1.2
     <span class="stp" id="stE1">E1</span><span class="stp" id="stE2">E2</span><span class="stp" id="stE3">E3</span>
   </span>
   <span>
@@ -901,6 +901,7 @@ $('btnGo').onclick=function(){ audioInit(); clickSnd(); toast('这台浏览器�
 $('navBack').onclick=function(){ audioInit(); clickSnd(); if(curPage==='pgForum'){ showMem(); } };
 
 /* ---- 存档恢复 ---- */
+(function(){
   var s=load(); if(!s)return;
   if(s.stage&&s.stage!=='prologue'){ $('btnCont').style.display='inline-block'; }
 })();
