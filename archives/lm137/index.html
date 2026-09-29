@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>续命 · LM-137 · 零点档原型 v0.1.2 兼容版</title>
-<!-- LM-137 《续命》demo v0.1.2 ｜ E1–E3 可玩 ｜ 单文件零依赖 ｜ 修复：孤儿IIFE致全脚本SyntaxError ｜ 老浏览器兼容层（NodeList.forEach / inset / flex-gap / onerror 诊断条）｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
+<title>续命 · LM-137 · 零点档原型 v0.1.3 兼容版</title>
+<!-- LM-137 《续命》demo v0.1.3 ｜ E1–E3 可玩 ｜ 单文件零依赖 ｜ 音量提升(master 4x) ｜ 修复孤儿IIFE ｜ 老浏览器兼容层 ｜ 构图规范与降AI感图片手册见《LM-137_优化笔记》 -->
 <style>
 /* ============ 0. 壳层（游戏层）：暗、静、只留一盏灯 ============ */
 :root{
@@ -312,7 +312,7 @@ window.onerror=function(msg,src,line,col){
 <div id="glow"></div>
 
 <div id="shellbar">
-  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.1.2
+  <span class="tt">《续命》 <b>LM-137</b> · 零点档原型 v0.1.3
     <span class="stp" id="stE1">E1</span><span class="stp" id="stE2">E2</span><span class="stp" id="stE3">E3</span>
   </span>
   <span>
@@ -557,7 +557,7 @@ function toast(s){var t=$('toast');t.textContent=s;t.style.display='block';
 var AC=null,master=null;
 function audioInit(){ if(AC)return;
   try{ AC=new (window.AudioContext||window.webkitAudioContext)();
-    master=AC.createGain(); master.gain.value=S.snd?1:0; master.connect(AC.destination);
+    master=AC.createGain(); master.gain.value=S.snd?4:0; master.connect(AC.destination);
   }catch(e){AC=null;} }
 function beep(f,d,v,type){ if(!AC||!S.snd)return;
   var o=AC.createOscillator(),g=AC.createGain();
@@ -566,7 +566,7 @@ function beep(f,d,v,type){ if(!AC||!S.snd)return;
   g.gain.setValueAtTime(v||.05,AC.currentTime);
   g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);
   o.stop(AC.currentTime+d+.02); }
-function clickSnd(){beep(1100,.03,.035,'sine');}
+function clickSnd(){beep(1100,.03,.07,'sine');}
 function errSnd(){beep(170,.22,.05,'sawtooth');}
 function okSnd(){beep(660,.12,.05,'sine');setTimeout(function(){beep(880,.18,.05,'sine');},130);}
 function noiseBurst(dur,vol,freq){ if(!AC||!S.snd)return;
@@ -896,7 +896,7 @@ function updClues(){
 $('btnClues').onclick=function(){ audioInit(); clickSnd(); $('clues').classList.toggle('show'); };
 $('clueCls').onclick=function(){ $('clues').classList.remove('show'); };
 $('btnSnd').onclick=function(){ S.snd=!S.snd; this.textContent=S.snd?'🔊 音效':'🔇 静音';
-  if(master)master.gain.value=S.snd?1:0; };
+  if(master)master.gain.value=S.snd?4:0; };
 $('btnGo').onclick=function(){ audioInit(); clickSnd(); toast('这台浏览器，只认一个网站。'); };
 $('navBack').onclick=function(){ audioInit(); clickSnd(); if(curPage==='pgForum'){ showMem(); } };
 
