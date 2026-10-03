@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#050507">
+<title>第39个闹钟 v0.1</title>
+<!-- 《第39个闹钟》v0.1 · 单交互恐怖 demo · 单文件零依赖零图片零外链 · 存档 alarm39_v01 · 文案依据剧本圣经 v0.1 §一/§二/§四 逐字照抄 -->
+<style>
+/* ========== 基础 ========== */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  background:#050507;
+  color:#e8e6e0;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  overflow-x:hidden;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+a{color:inherit;text-decoration:none;cursor:pointer;}
+.hidden{display:none !important;}
+#app{
+  position:relative;
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+  background:#0a0a0e;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(0,0,0,.85);
+}
+.page{position:relative;min-height:100vh;padding-bottom:40px;}
+
+/* ========== 兼容错误条（琥珀） ========== */
+#compatTip{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:99;
+  display:none;
+  background:#ffb340;
+  color:#241503;
+  font-size:12px;
+  line-height:1.5;
+  padding:6px 12px;
+  font-family:Menlo,Consolas,monospace;
+}
+
+/* ========== 雨 ========== */
+.rain{position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden;pointer-events:none;z-index:1;}
+.rain i{
+  position:absolute;
+  top:-60px;
+  width:1px;
+  height:36px;
+  background:linear-gradient(to bottom,rgba(150,180,220,0),rgba(150,180,220,.38));
+  animation:rainfall linear infinite;
+}
+@keyframes rainfall{to{transform:translateY(120vh);}}
+
+/* ========== 开场三行页 ========== */
+#pgIntro{background:radial-gradient(ellipse at 50% 18%,#101018 0%,#050507 72%);}
+.introInner{position:relative;z-index:2;padding:15vh 30px 60px;}
+.introTitle{font-size:30px;letter-spacing:6px;color:#dcd9e4;font-weight:600;}
+.introSub{margin-top:8px;font-size:12px;color:#6d6b78;letter-spacing:2px;}
+#introLines{margin-top:7vh;}
+.tyline{font-size:15px;line-height:2;color:#b9b6c4;min-height:2em;margin-bottom:14px;text-shadow:0 0 8px rgba(120,140,190,.12);}
+.tyline.typing::after{content:"▌";margin-left:2px;color:#7f96c4;animation:blink 1s steps(1,end) infinite;}
+#btnStart{
+  margin-top:6vh;
+  padding:13px 30px;
+  border:1px solid #3c4356;
+  border-radius:22px;
+  color:#cfd6e6;
+  font-size:15px;
+  letter-spacing:2px;
+  background:rgba(30,32,44,.5);
+  animation:pulseDim 2.4s ease-in-out infinite;
+}
+@keyframes blink{50%{opacity:0;}}
+@keyframes pulseDim{50%{border-color:#6a7ba8;color:#eef2ff;}}
+
+/* ========== 锁屏（39 条通知堆叠） ========== */
+#pgLock{background:radial-gradient(ellipse at 50% 0%,#0d0d16 0%,#050507 65%);}
+.lkTop{position:relative;z-index:2;display:flex;justify-content:space-between;padding:14px 18px;font-size:12px;color:#8b8996;}
+.lkClock{position:relative;z-index:2;margin-top:4vh;text-align:center;font-size:64px;font-weight:200;color:#e6e4ee;letter-spacing:2px;}
+.lkDate{position:relative;z-index:2;text-align:center;font-size:14px;color:#8b8996;margin-top:2px;}
+#lkStack{position:relative;z-index:2;margin:5vh auto 0;width:92%;max-width:430px;}
+.lkNote{
+  position:absolute;
+  left:0;
+  right:0;
+  background:rgba(24,24,32,.92);
+  border:1px solid #2a2a36;
+  border-radius:14px;
+  padding:10px 12px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+.lkIcon{
+  flex:none;
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  background:#e8933a;
+  color:#221503;
+  font-size:15px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.lkTxt{min-width:0;}
+.lkApp{font-size:11px;color:#9a98a6;}
+.lkMsg{font-size:13px;color:#dddbe6;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lkTail{
+  position:absolute;
+  left:0;
+  right:0;
+  background:rgba(20,20,28,.9);
+  border:1px solid #26262f;
+  border-radius:14px;
+  text-align:center;
+  font-size:12px;
+  color:#8b8996;
+  padding:9px;
+}
+.lkHint{position:absolute;left:0;right:0;bottom:6vh;text-align:center;font-size:12px;color:#6d6b78;z-index:2;animation:pulseDim 2.4s infinite;}
+
+/* ========== 状态栏 ========== */
+#statusBar{
+  position:relative;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 12px 6px;
+  font-size:12px;
+  color:#a9a7b4;
+  gap:8px;
+}
+.sbGrp{display:flex;align-items:center;gap:6px;}
+#battIcon{position:relative;display:inline-block;width:22px;height:11px;border:1px solid #7a7886;border-radius:3px;padding:1px;}
+#battIcon::after{content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:#7a7886;border-radius:1px;}
+#battFill{display:block;height:100%;width:100%;background:#30d158;border-radius:1px;transition:width .6s;}
+#battFill.lowb{background:#ff453a;}
+#battPct{font-variant-numeric:tabular-nums;}
+#battPct.low{color:#ff5a4e;}
+#tempIcon{color:#ff8f3a;font-weight:600;animation:tempPulse 1.6s infinite;}
+@keyframes tempPulse{50%{opacity:.55;}}
+#sbClock{font-variant-numeric:tabular-nums;letter-spacing:1px;font-size:13px;}
+#sbClock.glitch{animation:glitch .55s steps(2,end);}
+#sbClock.frozen{color:#ff453a;text-shadow:0 0 10px rgba(255,60,40,.5);}
+#sndBtn{font-size:11px;color:#8b8996;border:1px solid #33333e;border-radius:10px;padding:2px 8px;background:#14141b;}
+#verTag{font-size:10px;color:#55535e;}
+
+/* ========== 列表主界面 ========== */
+#listHead{padding:10px 16px 4px;border-bottom:1px solid #1c1c24;}
+#listHead h1{font-size:26px;font-weight:700;color:#e4e2ec;letter-spacing:2px;}
+#listSub{font-size:12px;color:#7c7a88;margin:4px 0 10px;}
+#alarmList{padding:12px 0 120px;}
+.arow{
+  position:relative;
+  display:flex;
+  align-items:center;
+  padding:13px 14px;
+  margin:0 12px 10px;
+  background:#14141a;
+  border:1px solid #1f1f28;
+  border-radius:14px;
+  overflow:hidden;
+  max-height:150px;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  touch-action:pan-y;
+}
+.ainfo{flex:1;min-width:0;}
+.atime{font-size:20px;font-weight:600;color:#e8e6f0;font-variant-numeric:tabular-nums;}
+.atime .adate{font-size:11px;font-weight:400;color:#7c7a88;margin-left:6px;}
+.atag{font-size:13px;color:#b6b3c2;margin-top:3px;line-height:1.5;}
+.atag.noTag{color:#5d5b68;}
+.lcMark{color:#d9c07a;font-size:10px;letter-spacing:1px;}
+.arv{
+  display:inline-block;
+  font-size:10px;
+  color:#ff6a5e;
+  border:1px solid #5a2320;
+  border-radius:6px;
+  padding:1px 5px;
+  margin-left:6px;
+  vertical-align:2px;
+  font-weight:400;
+}
+.actl{flex:none;margin-left:10px;text-align:center;}
+.sw{
+  position:relative;
+  display:block;
+  width:51px;
+  height:31px;
+  border-radius:16px;
+  background:#39394a;
+  transition:background .25s;
+  padding:0;
+  touch-action:none;
+}
+.sw .knob{
+  position:absolute;
+  top:2px;
+  left:2px;
+  width:27px;
+  height:27px;
+  border-radius:50%;
+  background:#f2f1f6;
+  box-shadow:0 2px 5px rgba(0,0,0,.45);
+  transition:left .22s;
+}
+.sw.on{background:#2ecf5a;}
+.sw.on .knob{left:22px;}
+.sw.holding{background:#8a2a22;}
+.sw.snap{animation:snapBack .4s;}
+.later{display:block;margin:6px auto 0;font-size:11px;color:#6f6d7c;padding:2px 8px;border-radius:9px;background:#1b1b23;}
+.holdbar{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(to right,#ff453a,#ff8f3a);z-index:2;}
+.arow.gone{animation:rowGone .46s forwards;pointer-events:none;}
+.arow.spawn{animation:rowSpawn .6s;border-color:#5a2320;}
+.arow.spawn .atime{color:#ffb4ac;}
+.arow.stuckRow{border-color:#2e2230;}
+.arow.shakex{animation:rowShake .32s;}
+@keyframes rowGone{
+  0%{opacity:1;}
+  100%{opacity:0;max-height:0;margin-bottom:0;padding-top:0;padding-bottom:0;transform:translateX(70px);}
+}
+@keyframes rowSpawn{0%{opacity:0;transform:translateY(-26px);}60%{opacity:1;}100%{opacity:1;transform:none;}}
+@keyframes snapBack{0%{transform:translateX(0);}30%{transform:translateX(-7px);}55%{transform:translateX(5px);}75%{transform:translateX(-3px);}100%{transform:translateX(0);}}
+@keyframes rowShake{25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+
+/* ========== 便签袋 ========== */
+#bagFab{
+  position:fixed;
+  right:16px;
+  bottom:26px;
+  z-index:60;
+  width:56px;
+  height:56px;
+  border-radius:12px;
+  background:#d9c07a;
+  color:#3a2c0a;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:1px;
+  box-shadow:0 4px 14px rgba(0,0,0,.5);
+  transform:rotate(-4deg);
+}
+#bagFab::before{content:"";position:absolute;top:0;right:0;width:0;height:0;border-top:12px solid #f4ead0;border-left:12px solid transparent;}
+#bagBadge{
+  position:absolute;
+  top:-8px;
+  right:-8px;
+  background:#1c1c24;
+  border:1px solid #3a3a46;
+  color:#e8e6e0;
+  font-size:10px;
+  border-radius:9px;
+  padding:2px 6px;
+  transform:rotate(4deg);
+}
+#bagFab.full{background:#ffdf8e;animation:bagGlow 1.8s infinite;}
+@keyframes bagGlow{50%{box-shadow:0 4px 20px rgba(255,200,90,.45);}}
+@media (min-width:520px){#bagFab{right:calc(50% - 224px);}}
+#bagPanel{
+  position:fixed;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  width:92%;
+  max-width:440px;
+  background:#17171f;
+  border:1px solid #2c2c38;
+  border-radius:18px;
+  padding:14px;
+  z-index:75;
+  box-shadow:0 8px 30px rgba(0,0,0,.6);
+}
+.bagHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.bagHead b{font-size:15px;letter-spacing:2px;}
+#bagClose{font-size:12px;color:#8b8996;border:1px solid #33333e;border-radius:10px;padding:3px 10px;}
+#bagList{max-height:46vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;}
+.bagItem{
+  text-align:left;
+  background:#1e1e28;
+  border:1px solid #2e2e3a;
+  border-left:3px solid #d9c07a;
+  border-radius:10px;
+  padding:9px 12px;
+  font-size:13px;
+  color:#cfcdd8;
+  line-height:1.6;
+}
+.bagItem .biCode{font-size:10px;color:#d9c07a;display:block;margin-bottom:2px;letter-spacing:1px;}
+#bagEmpty{font-size:12px;color:#6d6b78;padding:6px 2px 2px;}
+
+/* ========== 线索卡弹窗 ========== */
+#cardMask{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background:rgba(3,3,6,.78);
+  z-index:78;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#cardBox{
+  width:88%;
+  max-width:360px;
+  background:#1b1b23;
+  border:1px solid #3a3a46;
+  border-radius:18px;
+  padding:20px 20px 16px;
+  animation:cardIn .3s;
+}
+#cardBox.lcCard{border-color:#8a6d2f;box-shadow:0 0 24px rgba(217,192,122,.12);}
+#cardHead{font-size:12px;color:#8b8996;letter-spacing:1px;}
+#cardTag{font-size:17px;color:#eceaf4;margin-top:8px;font-weight:600;line-height:1.6;}
+#cardNote{font-size:14px;line-height:1.9;color:#d8d5e2;margin-top:12px;min-height:20px;}
+#cardNote.mut{color:#5d5b68;}
+#cardCr{font-size:11px;color:#7c7a88;margin-top:14px;border-top:1px dashed #33333e;padding-top:10px;line-height:1.7;}
+#cardLc{margin-top:10px;font-size:12px;color:#ffd98e;animation:lineIn .8s both;}
+#cardClose{margin-top:16px;width:100%;padding:9px;border-radius:12px;background:#26262f;color:#cfcdd8;font-size:14px;}
+@keyframes cardIn{0%{opacity:0;transform:scale(.92);}100%{opacity:1;transform:none;}}
+
+/* ========== 通知横幅 ========== */
+#bannerWrap{position:fixed;top:0;left:0;right:0;z-index:70;pointer-events:none;}
+.banner{
+  pointer-events:auto;
+  width:92%;
+  max-width:430px;
+  margin:10px auto 0;
+  background:rgba(26,26,34,.97);
+  border:1px solid #34343f;
+  border-radius:16px;
+  padding:10px 14px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  animation:bdown .5s;
+  box-shadow:0 6px 20px rgba(0,0,0,.5);
+}
+.banner.out{animation:bup .4s forwards;}
+.bIco{
+  flex:none;
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  background:#3a3a46;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+  font-weight:700;
+  color:#e8e6e0;
+}
+.banner.mama .bIco{background:#2f6f4f;}
+.banner.shop .bIco{background:#7a4a2a;}
+.banner.grp .bIco{background:#2a4a7a;}
+.banner.box .bIco{background:#4a4a56;}
+.banner.alarm .bIco{background:#e8933a;color:#221503;}
+.bCol{min-width:0;flex:1;}
+.bApp{font-size:11px;color:#9a98a6;}
+.bTxt{font-size:13px;color:#e2e0ea;margin-top:2px;line-height:1.5;}
+.bNow{flex:none;font-size:10px;color:#6d6b78;}
+.banner.lowB{border-color:#4a2028;}
+.banner.lowB .bApp{color:#c97a72;}
+@keyframes bdown{0%{transform:translateY(-70px);opacity:0;}100%{transform:none;opacity:1;}}
+@keyframes bup{0%{transform:none;opacity:1;}100%{transform:translateY(-70px);opacity:0;}}
+
+/* ========== toast ========== */
+#toastWrap{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:96px;
+  z-index:80;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  pointer-events:none;
+}
+.toast{
+  max-width:82%;
+  background:rgba(22,22,30,.95);
+  border:1px solid #2e2e3a;
+  color:#e6e4ee;
+  font-size:13px;
+  line-height:1.6;
+  padding:9px 16px;
+  border-radius:18px;
+  margin-top:8px;
+  animation:toastIn .28s;
+  text-align:center;
+}
+.toast.cold{border-color:#4a2028;color:#ffb4ac;}
+.toast.out{animation:toastOut .35s forwards;}
+@keyframes toastIn{0%{opacity:0;transform:translateY(10px);}100%{opacity:1;transform:none;}}
+@keyframes toastOut{0%{opacity:1;}100%{opacity:0;transform:translateY(6px);}}
+
+/* ========== 泛红边缘 / 抖动 / 时钟故障 ========== */
+#vignette{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:50;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 1.4s;
+  background:radial-gradient(ellipse at center,rgba(120,0,0,0) 46%,rgba(150,10,5,.5) 82%,rgba(90,0,0,.72) 100%);
+}
+#app.shakeS{animation:shakeS .14s linear infinite;}
+#app.shakeB{animation:shakeB .1s linear infinite;}
+@keyframes shakeS{
+  0%,100%{transform:translate(0,0);}
+  25%{transform:translate(1px,-1px);}
+  50%{transform:translate(-1px,1px);}
+  75%{transform:translate(1px,1px);}
+}
+@keyframes shakeB{
+  0%,100%{transform:translate(0,0);}
+  20%{transform:translate(-3px,2px);}
+  40%{transform:translate(3px,-2px);}
+  60%{transform:translate(-2px,-2px);}
+  80%{transform:translate(2px,2px);}
+}
+@keyframes glitch{
+  0%{transform:none;opacity:1;}
+  20%{transform:translateX(-3px) skewX(-10deg);color:#ff453a;}
+  40%{transform:translateX(3px) skewX(6deg);opacity:.6;}
+  60%{transform:translateX(-2px);color:#ff453a;}
+  80%{transform:translateX(2px);opacity:.8;}
+  100%{transform:none;opacity:1;}
+}
+
+/* ========== 结局：黑屏统计 / 第 40 个闹钟 / 关机 / 末行 ========== */
+#pgEnd{background:#020204;}
+#endStats{padding:14vh 30px 40px;}
+.stLine{opacity:0;font-size:15px;line-height:2;color:#c9c7d2;margin-bottom:20px;letter-spacing:.5px;}
+.stLine.show{animation:lineIn 1.2s both;}
+.stLine.hot{color:#ff5a4e;font-weight:700;}
+@keyframes lineIn{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:none;}}
+#pgNew{position:absolute;top:0;right:0;bottom:0;left:0;background:#0e0e13;z-index:3;animation:lineIn .8s both;}
+.naBar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #1f1f28;}
+.naCancel{color:#4c4a56;font-size:14px;}
+.naBar b{font-size:15px;letter-spacing:2px;}
+#naPower{color:#ff5a4e;font-size:14px;border:1px solid #4a2028;border-radius:10px;padding:4px 12px;background:rgba(60,16,16,.25);}
+.naRow{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #1c1c24;font-size:14px;color:#b6b3c2;}
+.naRow b{color:#eceaf4;font-size:15px;letter-spacing:1px;}
+.naDim{color:#5d5b68;}
+#naCount{text-align:center;font-size:52px;font-weight:200;color:#e8e6f0;margin-top:8vh;font-variant-numeric:tabular-nums;letter-spacing:3px;}
+#naCount.zero{color:#ff453a;animation:tempPulse .8s infinite;}
+#naHint{text-align:center;font-size:12px;color:#6d6b78;margin-top:10px;}
+#offMask{position:absolute;top:0;right:0;bottom:0;left:0;background:rgba(2,2,4,.86);z-index:6;display:flex;align-items:center;justify-content:center;}
+.offBox{width:80%;max-width:320px;background:#17171f;border:1px solid #3a3a46;border-radius:16px;padding:22px 18px 18px;text-align:center;}
+.offBox p{font-size:14px;line-height:1.8;color:#e2e0ea;}
+.offBtns{display:flex;gap:10px;justify-content:center;margin-top:16px;}
+.offBtns button{flex:1;padding:10px;border-radius:12px;font-size:14px;}
+#offCancel{background:#26262f;color:#cfcdd8;}
+#offHold{
+  background:#3a1010;
+  color:#ff6a5e;
+  border:1px solid #5a2320;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+#offProg{height:3px;background:#ff453a;width:0;margin-top:14px;border-radius:2px;}
+#endFinal{position:absolute;top:0;right:0;bottom:0;left:0;background:#020204;z-index:7;padding:16vh 30px 40px;}
+#endFinal .finLine{opacity:0;font-size:15px;line-height:2.1;color:#c9c7d2;margin-bottom:22px;}
+#endFinal .finLine.show{animation:lineIn 1.4s both;}
+#endFinal .finDone{opacity:0;text-align:center;color:#5d5b68;letter-spacing:4px;margin-top:5vh;font-size:14px;}
+#endFinal .finDone.show{animation:lineIn 1.4s both;}
+#restartLink{display:block;margin:6vh auto 0;width:130px;text-align:center;font-size:12px;color:#4c4a56;border-bottom:1px dotted #33333e;padding-bottom:2px;}
+
+/* ========== flex gap 兼容层（老 WebView 无 gap 时用 margin） ========== */
+@supports not (gap: 1px) {
+  #statusBar > .sbGrp + .sbGrp{margin-left:8px;}
+  .sbGrp > * + *{margin-left:6px;}
+  #bagList > .bagItem + .bagItem{margin-top:8px;}
+  .banner .bCol{margin-left:10px;}
+  .lkNote .lkTxt{margin-left:10px;}
+  .offBtns button + button{margin-left:10px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- 开场三行页（圣经§一 逐字） -->
+  <section id="pgIntro" class="page">
+    <div class="rain" id="rainIntro"></div>
+    <div class="introInner">
+      <h1 class="introTitle">第39个闹钟</h1>
+      <div class="introSub">单交互恐怖 · 关闹钟 · demo</div>
+      <div id="introLines">
+        <p class="tyline" data-t="10-05，夜雨。登山社说沈亦舟在鳌太线失联第三天。"></p>
+        <p class="tyline" data-t="搜救队在他常走的校道边的帐篷里捡到这部手机——人在山上，手机在城里。"></p>
+        <p class="tyline" data-t="他妈托你把闹钟关了，“别让它在守灵那几天响”。"></p>
+      </div>
+      <button id="btnStart" class="hidden">【开始关闹钟】</button>
+    </div>
+  </section>
+
+  <!-- 锁屏：39 条通知堆叠 -->
+  <section id="pgLock" class="page hidden">
+    <div class="rain" id="rainLock"></div>
+    <div class="lkTop"><span>无服务</span><span>10-05 夜</span></div>
+    <div class="lkClock">04:44</div>
+    <div class="lkDate">10月5日</div>
+    <div id="lkStack"></div>
+    <div class="lkHint">点按任意处 · 查看全部 39 条闹钟</div>
+  </section>
+
+  <!-- 列表主界面 -->
+  <section id="pgList" class="page hidden">
+    <div id="statusBar">
+      <div class="sbGrp">
+        <span id="battIcon"><i id="battFill"></i></span>
+        <span id="battPct">100%</span>
+      </div>
+      <div class="sbGrp">
+        <span id="tempIcon" class="hidden">43°C</span>
+        <span id="sbClock">06:50</span>
+      </div>
+      <div class="sbGrp">
+        <button id="sndBtn">声:开</button>
+        <span id="verTag">v0.1</span>
+      </div>
+    </div>
+    <div id="listHead">
+      <h1>闹钟</h1>
+      <div id="listSub">替沈亦舟把它们关掉。</div>
+    </div>
+    <div id="alarmList"></div>
+    <button id="bagFab">便签<span id="bagBadge">0/8</span></button>
+  </section>
+
+  <!-- 横幅容器 -->
+  <div id="bannerWrap"></div>
+
+  <!-- 便签袋面板 -->
+  <div id="bagPanel" class="hidden">
+    <div class="bagHead"><b>便签袋</b><button id="bagClose">收起</button></div>
+    <div id="bagList"></div>
+    <div id="bagEmpty">还没有便签。长按闹钟，看看备注。</div>
+  </div>
+
+  <!-- 线索卡弹窗 -->
+  <div id="cardMask" class="hidden">
+    <div id="cardBox">
+      <div id="cardHead"></div>
+      <div id="cardTag"></div>
+      <div id="cardNote"></div>
+      <div id="cardCr"></div>
+      <div id="cardLc" class="hidden"></div>
+      <button id="cardClose">合上</button>
+    </div>
+  </div>
+
+  <!-- 结局：统计 → 第 40 个闹钟 → 关机 → 末行 -->
+  <section id="pgEnd" class="page hidden">
+    <div id="endStats"></div>
+    <div id="pgNew" class="hidden">
+      <div class="naBar">
+        <span class="naCancel">取消</span>
+        <b>添加闹钟</b>
+        <button id="naPower">关机</button>
+      </div>
+      <div class="naRow"><span>时间</span><b id="naTime">--:--</b></div>
+      <div class="naRow"><span>标签</span><b id="naTag">跑吧</b></div>
+      <div class="naRow"><span>重复</span><span class="naDim">永不</span></div>
+      <div class="naRow"><span>响铃</span><span class="naDim">关</span></div>
+      <div id="naCount">3:00</div>
+      <div id="naHint">闹钟将在 3 分钟后响铃。</div>
+    </div>
+    <div id="offMask" class="hidden">
+      <div class="offBox">
+        <p id="offText">关机后，所有闹钟将失效。</p>
+        <div class="offBtns">
+          <button id="offCancel">取消</button>
+          <button id="offHold">长按关机</button>
+        </div>
+        <div id="offProg"></div>
+      </div>
+    </div>
+    <div id="endFinal" class="hidden"></div>
+  </section>
+
+  <div id="toastWrap"></div>
+  <div id="vignette"></div>
+</div>
+<div id="compatTip"></div>
+<script>
+"use strict";
+/* ================= JS-1 · 数据与状态 ================= */
+/* 39 条总表逐字照抄圣经§二（字段：n 日期 d 时间 t 标签 tag 行为 bh 长按备注 note 创建于 cr 线索 lc）
+   bh: normal | stuck(长按3秒强关) | stuck2(#30 双段弹开) | revive(复活相关行)
+   #19 备注列的"时间 03:33"以 dt 显示时间呈现；#25 由 #20 复活后生成（hide:1，不在初始列表） */
+var SAVE_KEY='alarm39_v01';
+
+var ALARMS=[
+{n:1,d:'09-26',t:'06:50',tag:'早八高数 别迟到（这次真的）',bh:'normal',note:'',cr:'09-20',lc:0},
+{n:2,d:'09-26',t:'07:00',tag:'真起了',bh:'normal',note:'',cr:'09-20',lc:0},
+{n:3,d:'09-26',t:'07:10',tag:'最后警告',bh:'normal',note:'',cr:'09-20',lc:0},
+{n:4,d:'09-26',t:'07:20',tag:'？？你人呢',bh:'normal',note:'',cr:'09-20',lc:0},
+{n:5,d:'09-27',t:'12:00',tag:'外卖 麻辣拌 不要香菜',bh:'normal',note:'',cr:'09-21',lc:0},
+{n:6,d:'09-27',t:'14:00',tag:'下午的课 装记笔记',bh:'normal',note:'',cr:'09-21',lc:0},
+{n:7,d:'09-28',t:'18:30',tag:'健身房（去了就是赚到）',bh:'normal',note:'',cr:'09-22',lc:0},
+{n:8,d:'09-28',t:'19:30',tag:'健身房真的去了吗',bh:'normal',note:'',cr:'09-22',lc:0},
+{n:9,d:'09-29',t:'21:00',tag:'社团例会 带水 装忙',bh:'normal',note:'',cr:'09-23',lc:0},
+{n:10,d:'09-29',t:'22:30',tag:'给妈打电话',bh:'normal',note:'妈说国庆别去爬山，人多。',cr:'09-23',lc:1},
+{n:11,d:'09-29',t:'23:00',tag:'打游戏 别超点',bh:'normal',note:'',cr:'09-23',lc:0},
+{n:12,d:'09-30',t:'00:30',tag:'睡了睡了 真睡了',bh:'normal',note:'',cr:'09-24',lc:0},
+{n:13,d:'09-30',t:'21:00',tag:'收拾装备 别落东西',bh:'normal',note:'',cr:'09-24',lc:0},
+{n:14,d:'09-30',t:'23:40',tag:'明天 5:59 起 错过大巴完蛋',bh:'normal',note:'',cr:'09-24',lc:0},
+{n:15,d:'10-01',t:'05:59',tag:'真起了 真的',bh:'normal',note:'',cr:'09-24',lc:0},
+{n:16,d:'10-01',t:'06:20',tag:'充电宝 充电宝 充电宝',bh:'normal',note:'',cr:'09-24',lc:0},
+{n:17,d:'10-01',t:'06:40',tag:'身份证！拿了没！',bh:'normal',note:'',cr:'09-24',lc:0},
+{n:18,d:'10-01',t:'06:50',tag:'大巴 07:20 发车',bh:'normal',note:'',cr:'09-24',lc:0},
+{n:19,d:'10-01',t:'21:12',dt:'03:33',tag:'',bh:'normal',note:'窗户外有人走过。别数脚步声。',cr:'10-01 21:12',lc:2},
+{n:20,d:'10-02',t:'03:33',tag:'看窗户',bh:'stuck',note:'帐篷的窗户。宿舍的窗户。哪扇？',cr:'10-01 21:12',lc:0},
+{n:21,d:'10-02',t:'04:44',tag:'',bh:'stuck',note:'',cr:'10-02 05:01',lc:3},
+{n:22,d:'10-02',t:'05:00',tag:'帐篷拉链 反锁',bh:'normal',note:'拉链从外面也能拉上。',cr:'10-01 21:30',lc:0},
+{n:23,d:'10-02',t:'06:00',tag:'今天不走 营地日',bh:'normal',note:'轨迹 App 显示 10-02 08:10 拔营了。',cr:'10-01 21:30',lc:4},
+{n:24,d:'10-02',t:'12:00',tag:'雾散了就动',bh:'normal',note:'',cr:'10-01 21:30',lc:0},
+{n:25,d:'10-03',t:'03:33',tag:'看窗户',bh:'revive',note:'这次的窗户没有霜。你希望有。',cr:'10-01 21:12',lc:0,hide:1},
+{n:26,d:'10-03',t:'04:44',tag:'',bh:'revive',note:'',cr:'10-02 05:01',lc:0},
+{n:27,d:'10-03',t:'06:00',tag:'晓白的早八 别替他关',bh:'normal',note:'创建于 10-03 02:14——人在失联状态，这条是谁设的？标签里有你的名字。',cr:'10-03 02:14',lc:5},
+{n:28,d:'10-03',t:'23:00',tag:'替他给妈打电话 别让阿姨担心',bh:'normal',note:'同样创建于 10-03 02:14。温柔的恐怖。',cr:'10-03 02:14',lc:0},
+{n:29,d:'10-03',t:'02:14',tag:'',bh:'normal',note:'如果你看到这条，说明你快关完了。乖。',cr:'10-03 02:14:33',lc:6},
+{n:30,d:'10-04',t:'04:44',tag:'',bh:'stuck2',note:'',cr:'10-02 05:01',lc:0},
+{n:31,d:'10-04',t:'05:00',tag:'帐篷拉链 反锁',bh:'revive',note:'拉链还是从外面拉上的。',cr:'10-01 21:30',lc:0},
+{n:32,d:'10-04',t:'06:50',tag:'早八高数 别迟到（这次真的）',bh:'revive',note:'',cr:'09-20',lc:0},
+{n:33,d:'10-04',t:'07:00',tag:'真起了',bh:'revive',note:'',cr:'09-20',lc:0},
+{n:34,d:'10-04',t:'07:10',tag:'最后警告',bh:'revive',note:'',cr:'09-20',lc:0},
+{n:35,d:'10-05',t:'03:33',tag:'看窗户',bh:'normal',note:'窗户上有霜。哈气能擦开。别擦。',cr:'10-01 21:12',lc:7},
+{n:36,d:'10-05',t:'05:30',tag:'今天',bh:'normal',note:'闹钟都关完的话——谢谢。替我跟妈说对不起。别怕，已经过去了。',cr:'10-02 13:52',lc:8},
+{n:37,d:'10-05',t:'12:00',tag:'外卖 麻辣拌 不要香菜',bh:'revive',note:'订单显示：已送达，无人取餐。',cr:'09-21',lc:0},
+{n:38,d:'10-06',t:'06:50',tag:'真起了',bh:'normal',note:'',cr:'09-20',lc:0}
+];
+
+/* 复活生成的幽灵闹钟（§三5 共 4 处：#20→#25 换日期回来、#26 自身倒退一分钟、#31→#22 复活于 10-04、#37→#5 复活于 10-06） */
+var GHOSTS={
+'26r':{n:26,d:'10-03',t:'04:43',tag:'',bh:'normal',note:'',cr:'10-02 05:01',lc:0,rv:1},
+'22r':{n:22,d:'10-04',t:'05:00',tag:'帐篷拉链 反锁',bh:'normal',note:'拉链还是从外面拉上的。',cr:'10-01 21:30',lc:0,rv:1},
+'5r':{n:5,d:'10-06',t:'12:00',tag:'外卖 麻辣拌 不要香菜',bh:'normal',note:'订单显示：已送达，无人取餐。',cr:'09-21',lc:0,rv:1}
+};
+var REVIVES=[{src:20,gid:'25'},{src:26,gid:'26r'},{src:31,gid:'22r'},{src:37,gid:'5r'}];
+
+/* 稍后提醒·彩蛋池：前期损友笑池 6 条 / 后期寒池 4 条（寒池四条照抄圣经§三2） */
+var SNARK_FUN=[
+'稍后？你上一次「稍后」到现在还没起来。',
+'行，再睡五分钟，高数也想跟你聊聊。',
+'你按我一下，我记你一笔，期末见。',
+'贪睡键不是关机键，分清楚。',
+'我还能响一百遍，丢人的又不是我。',
+'就你这手速，早八都得替你着急。'
+];
+var SNARK_COLD=[
+'你手心的汗，我闻到了',
+'贪睡的人，梦最浅',
+'第 26 个了。你很认真。',
+'别关了，让它响'
+];
+
+/* 开场三行（圣经§一逐字） */
+var INTRO_LINES=[
+'10-05，夜雨。登山社说沈亦舟在鳌太线失联第三天。',
+'搜救队在他常走的校道边的帐篷里捡到这部手机——人在山上，手机在城里。',
+'他妈托你把闹钟关了，“别让它在守灵那几天响”。'
+];
+/* 结局统计行（圣经§四逐字） */
+var STATS_LINES=[
+'已替沈亦舟关闭闹钟：39 个中的 38 个。',
+'其中 31 个，在他失联后仍然响过。',
+'闹钟的作用，是叫醒人。',
+'可有些闹钟，是为了不让某些东西醒过来。',
+'——他把它们设到 10-06。一个都没敢漏。',
+'你替他关掉了全部。'
+];
+/* 末行（圣经§四逐字；8/8 追加行） */
+var FINAL_LINES=[
+'「10-06 06:50，你的手机会响。不是这条闹钟——是你自己上个月随手设的那个。',
+'去关它的时候，看一眼窗户。」'
+];
+var FINAL_LC_LINE='「他设 39 个不是怕睡过头。是在数他还剩几天。」';
+
+/* 通知横幅（§三6：#12/#31 妈妈、#37 外卖 + 2 条日常穿插） */
+var BANNERS={
+12:{app:'妈妈',txt:'到了吗？',low:0},
+14:{app:'社团群',txt:'明早 07:20 大巴，别迟到。亦舟在名单里。',low:0},
+16:{app:'快递柜',txt:'尾号 3917 的包裹已存放 3 天，逾期将退回。',low:0},
+31:{app:'妈妈',txt:'儿子？',low:1},
+37:{app:'外卖',txt:'已送达（10-02 12:04，无人取餐）',low:1}
+};
+var BANNER_CLS={'妈妈':'mama','外卖':'shop','社团群':'grp','快递柜':'box','闹钟':'alarm'};
+
+/* 线索卡 LC1-LC8：闹钟 id 映射、便签标题、无备注闹钟的线索补文（取圣经原文批注） */
+var LC_ALARM={1:'10',2:'19',3:'21',4:'23',5:'27',6:'29',7:'35',8:'36'};
+var LC_TITLES={1:'妈的叮嘱',2:'别数脚步声',3:'17 分钟',4:'拔营时间',5:'晓白的早八',6:'快关完了',7:'窗上的霜',8:'对不起'};
+var LC_EXTRAS={3:'创建于 10-02 05:01——铃响 17 分钟后才创建？'};
+
+/* 存档结构（圣经§六固定字段） */
+var S={n:0,closed:{},notes:{},lc:[],snd:1,combo:0,stage:'intro',_done:0,joinAt:0};
+
+/* 运行时状态（不入存档；revive 待办用 closed 时间戳在重进时重算） */
+var openedCount=0;
+var comboN=0;
+var lastCloseAt=0;
+var snarkIdx=-1;
+var attempts={};
+var schedRevive={};
+var liveGhosts={};
+var pendingRevives=0;
+var holdState=null;
+var suppressClick=0;
+var lpFired=0;
+var lpTimer=null;
+var tp=null;
+var clockMin=410;
+var clockFrozen=false;
+var clockTimer=null;
+var backTimer=null;
+var creepSec=0;
+var naTimer=null;
+var naLeft=180;
+var typoTimer=null;
+var typoP=null;
+var typoT='';
+var typoI=0;
+var typoLine=0;
+var introDone=false;
+var offT=null;
+
+function $(id){return document.getElementById(id);}
+
+function save(){
+  try{window.localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){}
+}
+function loadS(){
+  var raw=null;
+  try{raw=window.localStorage.getItem(SAVE_KEY);}catch(e){}
+  if(!raw){return;}
+  var o=null;
+  try{o=JSON.parse(raw);}catch(e){}
+  if(!o||typeof o!=='object'){return;}
+  S.n=o.n||0;
+  S.closed=o.closed||{};
+  S.notes=o.notes||{};
+  S.lc=o.lc||[];
+  S.snd=(o.snd===0)?0:1;
+  S.combo=o.combo||0;
+  S.stage=o.stage||'intro';
+  S._done=o._done||0;
+  S.joinAt=o.joinAt||0;
+}
+
+function toast(msg,cold,ms){
+  var w=$('toastWrap');
+  if(!w){return;}
+  var d=document.createElement('div');
+  d.className='toast'+(cold?' cold':'');
+  d.textContent=msg;
+  w.appendChild(d);
+  var life=ms||2400;
+  setTimeout(function(){
+    d.className='toast out'+(cold?' cold':'');
+    setTimeout(function(){if(d.parentNode){d.parentNode.removeChild(d);}},420);
+  },life);
+}
+
+function findAlarm(id){
+  var i;
+  if(GHOSTS[id]){return GHOSTS[id];}
+  for(i=0;i<ALARMS.length;i++){
+    if(String(ALARMS[i].n)===String(id)){return ALARMS[i];}
+  }
+  return null;
+}
+function isOrig(id){
+  var v=parseInt(id,10);
+  return !isNaN(v)&&v>=1&&v<=38&&String(v)===String(id);
+}
+function countClosed(){
+  var c=0,k;
+  for(k in S.closed){
+    if(S.closed.hasOwnProperty(k)&&isOrig(k)){c++;}
+  }
+  return c;
+}
+function upAttr(el,attr){
+  var e=el;
+  while(e&&e!==document){
+    if(e.getAttribute&&e.getAttribute(attr)){return e;}
+    e=e.parentNode;
+  }
+  return null;
+}
+/* ================= JS-2 · 音频引擎（程序生成，圣经§五） ================= */
+var AC=null;
+var MASTER=null;
+var COMP=null;
+var humOsc=null,humGain=null,humLfo=null,humLfoGain=null;
+
+function ensureAudio(){
+  var C=window.AudioContext||window.webkitAudioContext;
+  if(!C){return;}
+  if(!AC){
+    try{
+      AC=new C();
+      MASTER=AC.createGain();
+      MASTER.gain.value=4; /* 圣经/任务指定 MASTER.gain=4，经压缩器防削波 */
+      COMP=AC.createDynamicsCompressor();
+      MASTER.connect(COMP);
+      COMP.connect(AC.destination);
+    }catch(e){AC=null;return;}
+  }
+  if(AC.state==='suspended'&&AC.resume){
+    try{AC.resume();}catch(e2){}
+  }
+}
+function sndOK(){return S.snd===1&&AC&&MASTER;}
+
+/* 基础音：f0→f1 指数滑音 + 包络；when 为绝对 AudioContext 时间（可省） */
+function toneAt(f0,f1,dur,type,vol,when){
+  if(!sndOK()){return;}
+  var t=(typeof when==='number')?when:AC.currentTime;
+  var o=AC.createOscillator();
+  var g=AC.createGain();
+  o.type=type||'sine';
+  o.frequency.setValueAtTime(Math.max(1,f0),t);
+  if(f1&&f1!==f0){
+    o.frequency.exponentialRampToValueAtTime(Math.max(1,f1),t+dur);
+  }
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(Math.max(0.001,vol),t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g);
+  g.connect(MASTER);
+  o.start(t);
+  o.stop(t+dur+0.06);
+}
+function tone(f0,f1,dur,type,vol){toneAt(f0,f1,dur,type,vol);}
+
+/* 白噪声爆点（glitch/弹开/关机电流的碎响） */
+function noiseBurst(dur,vol,fLow){
+  if(!sndOK()){return;}
+  var t=AC.currentTime;
+  var len=Math.max(1,Math.floor(AC.sampleRate*dur));
+  var buf=AC.createBuffer(1,len,AC.sampleRate);
+  var data=buf.getChannelData(0);
+  var i;
+  for(i=0;i<len;i++){data[i]=(Math.random()*2-1)*(1-i/len);}
+  var src=AC.createBufferSource();
+  src.buffer=buf;
+  var f=AC.createBiquadFilter();
+  f.type='lowpass';
+  f.frequency.value=fLow||3200;
+  var g=AC.createGain();
+  g.gain.value=vol;
+  src.connect(f);
+  f.connect(g);
+  g.connect(MASTER);
+  src.start(t);
+}
+
+function beep(f,dur,vol){toneAt(f||660,0,dur||0.08,'sine',vol||0.1);}
+function slideSnd(){toneAt(640,240,0.09,'triangle',0.09);}
+
+/* 关闭音：音高随 #n 递减，38 连成下坠感 */
+function tickOff(n){
+  if(!sndOK()){return;}
+  var t=AC.currentTime;
+  var f=780*Math.pow(0.975,n||1);
+  toneAt(f,0,0.07,'square',0.13,t);
+  toneAt(f*0.66,0,0.11,'square',0.11,t+0.09);
+  noiseBurst(0.05,0.04,2000);
+}
+/* stuck 长按心跳（lub-dub） */
+function heartSnd(){
+  if(!sndOK()){return;}
+  var t=AC.currentTime;
+  toneAt(72,40,0.18,'sine',0.22,t);
+  toneAt(58,34,0.22,'sine',0.17,t+0.3);
+}
+/* revive 重现音：反向 tick 音高上挑 + 刺耳噪声 */
+function reverseTick(){
+  if(!sndOK()){return;}
+  var t=AC.currentTime;
+  var i;
+  for(i=0;i<6;i++){toneAt(280+i*140,0,0.06,'sawtooth',0.055,t+i*0.07);}
+  noiseBurst(0.35,0.06,2600);
+}
+/* 横幅叮：前期清脆 / 后期低沉两套 */
+function bannerDing(low){
+  if(!sndOK()){return;}
+  var t=AC.currentTime;
+  if(low){
+    toneAt(311,0,0.35,'sine',0.09,t);
+    toneAt(233,0,0.55,'sine',0.08,t+0.2);
+  }else{
+    toneAt(880,0,0.22,'sine',0.08,t);
+    toneAt(1174,0,0.42,'sine',0.07,t+0.13);
+  }
+}
+/* #30 人声哼鸣：正弦 220→215 滑音 + 5Hz 颤音 */
+function humStart(){
+  if(!AC||!MASTER||humOsc||S.snd!==1){return;}
+  var t=AC.currentTime;
+  humOsc=AC.createOscillator();
+  humOsc.type='sine';
+  humOsc.frequency.setValueAtTime(220,t);
+  humOsc.frequency.linearRampToValueAtTime(215,t+4);
+  humGain=AC.createGain();
+  humGain.gain.setValueAtTime(0.0001,t);
+  humGain.gain.exponentialRampToValueAtTime(0.07,t+0.6);
+  humLfo=AC.createOscillator();
+  humLfo.type='sine';
+  humLfo.frequency.value=5.2;
+  humLfoGain=AC.createGain();
+  humLfoGain.gain.value=3.5;
+  humLfo.connect(humLfoGain);
+  humLfoGain.connect(humOsc.frequency);
+  humOsc.connect(humGain);
+  humGain.connect(MASTER);
+  humOsc.start(t);
+  humLfo.start(t);
+}
+function humStop(){
+  if(!humOsc){return;}
+  try{
+    var t=AC.currentTime;
+    humGain.gain.cancelScheduledValues(t);
+    humGain.gain.setValueAtTime(Math.max(0.0001,humGain.gain.value),t);
+    humGain.gain.exponentialRampToValueAtTime(0.0001,t+0.25);
+    humOsc.stop(t+0.3);
+    humLfo.stop(t+0.3);
+  }catch(e){}
+  humOsc=null;humGain=null;humLfo=null;humLfoGain=null;
+}
+function humSnd(on){
+  if(on){humStart();}else{humStop();}
+}
+/* 结局倒计时嘀嗒 */
+function countdownTick(){toneAt(1320,0,0.04,'sine',0.04);}
+/* 关机长按电流声 + 熄灭 */
+function powerDown(){
+  if(!sndOK()){return;}
+  var t=AC.currentTime;
+  toneAt(320,36,1.4,'sawtooth',0.09,t);
+  toneAt(190,28,1.6,'triangle',0.07,t+0.08);
+  noiseBurst(1.0,0.05,900);
+  setTimeout(function(){noiseBurst(0.3,0.04,600);},900);
+}
+/* ================= JS-3 · 开场/锁屏/列表渲染 ================= */
+function showPage(id){
+  var pages=document.querySelectorAll('section.page');
+  var i;
+  for(i=0;i<pages.length;i++){pages[i].className='page hidden';}
+  var p=$(id);
+  if(p){p.className='page';}
+}
+function buildRain(host,n){
+  host.innerHTML='';
+  var i;
+  for(i=0;i<n;i++){
+    var d=document.createElement('i');
+    d.style.left=(Math.random()*100)+'%';
+    d.style.animationDuration=(0.7+Math.random()*0.9)+'s';
+    d.style.animationDelay=(Math.random()*1.4)+'s';
+    d.style.opacity=String(0.3+Math.random()*0.5);
+    host.appendChild(d);
+  }
+}
+
+/* ---- 开场三行打字机 ---- */
+function startIntro(){
+  showPage('pgIntro');
+  buildRain($('rainIntro'),16);
+  introDone=false;
+  typoLine=0;
+  setTimeout(function(){startLine(0);},800);
+}
+function startLine(i){
+  var lines=document.querySelectorAll('#introLines .tyline');
+  if(i>=lines.length){showStart();return;}
+  var p=lines[i];
+  typoP=p;
+  typoT=p.getAttribute('data-t')||'';
+  typoI=0;
+  p.className='tyline typing';
+  typeStep();
+}
+function typeStep(){
+  if(!typoP){return;}
+  typoI++;
+  if(typoI<=typoT.length){
+    typoP.textContent=typoT.substring(0,typoI);
+    typoTimer=setTimeout(typeStep,46);
+  }else{
+    typoP.className='tyline';
+    typoP=null;
+    var next=typoLine+1;
+    typoLine=next;
+    if(next<INTRO_LINES.length){
+      typoTimer=setTimeout(function(){startLine(next);},420);
+    }else{
+      showStart();
+    }
+  }
+}
+function skipIntro(){
+  if(introDone){return;}
+  if(typoTimer){clearTimeout(typoTimer);typoTimer=null;}
+  var lines=document.querySelectorAll('#introLines .tyline');
+  var i;
+  for(i=0;i<lines.length;i++){
+    lines[i].textContent=lines[i].getAttribute('data-t')||'';
+    lines[i].className='tyline';
+  }
+  typoP=null;
+  showStart();
+}
+function showStart(){
+  introDone=true;
+  $('btnStart').className='';
+}
+function startGame(){
+  ensureAudio();
+  S.stage='lock';
+  if(!S.joinAt){S.joinAt=Date.now();}
+  save();
+  showPage('pgLock');
+  buildLock();
+  beep(520,0.1,0.08);
+}
+
+/* ---- 锁屏：38 张通知卡堆叠出 39 条的压迫感 ---- */
+function buildLock(){
+  buildRain($('rainLock'),14);
+  var st=$('lkStack');
+  st.innerHTML='';
+  var top=0;
+  var idx;
+  for(idx=0;idx<ALARMS.length;idx++){
+    var al=ALARMS[ALARMS.length-1-idx]; /* 最新在上 */
+    var card=document.createElement('div');
+    card.className='lkNote';
+    var ico=document.createElement('div');
+    ico.className='lkIcon';
+    ico.textContent='闹';
+    var col=document.createElement('div');
+    col.className='lkTxt';
+    var a1=document.createElement('div');
+    a1.className='lkApp';
+    a1.textContent='闹钟';
+    var a2=document.createElement('div');
+    a2.className='lkMsg';
+    a2.textContent='「'+(al.tag!==''?al.tag:'（无标签）')+'」 '+al.d+' '+(al.dt||al.t);
+    col.appendChild(a1);
+    col.appendChild(a2);
+    card.appendChild(ico);
+    card.appendChild(col);
+    if(idx<6){
+      top=idx*68;
+      card.style.opacity=String(1-idx*0.05);
+    }else if(idx<36){
+      top=5*68+(idx-5)*7;
+      card.style.opacity=String(Math.max(0.18,0.8-(idx-5)*0.06));
+    }else{
+      top=5*68+31*7;
+      card.style.opacity='0.12';
+    }
+    card.style.top=top+'px';
+    card.style.zIndex=String(60-idx);
+    st.appendChild(card);
+  }
+  var tail=document.createElement('div');
+  tail.className='lkTail';
+  tail.style.top=(top+64)+'px';
+  tail.textContent='还有 '+(ALARMS.length-6)+' 条通知';
+  st.appendChild(tail);
+  st.style.height=(top+116)+'px';
+}
+function enterList(){
+  ensureAudio();
+  S.stage='list';
+  save();
+  showPage('pgList');
+  renderList();
+  startAmbient();
+  setTimeout(function(){toast('左右滑动或点按开关，关闭闹钟。',false,2800);},900);
+  setTimeout(function(){
+    var seen=false,k;
+    for(k in S.notes){if(S.notes.hasOwnProperty(k)){seen=true;break;}}
+    if(!seen){toast('长按闹钟的左边，可以看备注。',false,2800);}
+  },9500);
+}
+
+/* ---- 列表渲染：按响铃时间倒序堆叠（最近在上） ---- */
+function ghostLive(gid){return liveGhosts[gid]===1?1:0;}
+function renderList(){
+  var wrap=$('alarmList');
+  wrap.innerHTML='';
+  var items=[];
+  var i,al,gk;
+  for(i=0;i<ALARMS.length;i++){
+    al=ALARMS[i];
+    if(al.hide===1&&!ghostLive(String(al.n))){continue;} /* #25 待 #20 复活生成 */
+    items.push({id:String(al.n),al:al,ghost:ghostLive(String(al.n))===1});
+  }
+  for(gk in GHOSTS){
+    if(GHOSTS.hasOwnProperty(gk)&&ghostLive(gk)===1){
+      items.push({id:gk,al:GHOSTS[gk],ghost:true});
+    }
+  }
+  items.sort(function(a,b){
+    var ka=a.al.d+' '+a.al.t,kb=b.al.d+' '+b.al.t;
+    return ka<kb?1:(ka>kb?-1:0);
+  });
+  var opened=0;
+  for(i=0;i<items.length;i++){
+    if(S.closed[items[i].id]){continue;}
+    wrap.appendChild(buildRow(items[i].id,items[i].al,items[i].ghost));
+    opened++;
+  }
+  updateHead(opened);
+  updateStatus();
+  updateBag();
+}
+function buildRow(id,al,isGhost){
+  var d=document.createElement('div');
+  d.className='arow'+(al.bh==='stuck'||al.bh==='stuck2'?' stuckRow':'')+(isGhost?' spawn':'');
+  d.setAttribute('data-id',id);
+  var tagTxt=(al.tag!=='')?al.tag:'（无标签）';
+  var tShow=al.dt||al.t;
+  var html='';
+  html+='<div class="ainfo">';
+  html+='<div class="atime">'+tShow+'<span class="adate">'+al.d+'</span>';
+  if(isGhost){html+='<span class="arv">已恢复</span>';}
+  html+='</div>';
+  html+='<div class="atag'+(al.tag===''?' noTag':'')+'">'+tagTxt;
+  if(al.lc){html+=' <span class="lcMark">LC'+al.lc+'</span>';}
+  html+='</div>';
+  html+='</div>';
+  html+='<div class="actl"><button class="sw on" data-act="sw"><i class="knob"></i></button><button class="later" data-act="later">稍后</button></div>';
+  html+='<i class="holdbar"></i>';
+  d.innerHTML=html;
+  return d;
+}
+function prependRow(gid){
+  var al=findAlarm(gid);
+  if(!al){return;}
+  var wrap=$('alarmList');
+  var row=buildRow(gid,al,true);
+  wrap.insertBefore(row,wrap.firstChild);
+  openedCount++;
+  updateHead(openedCount);
+}
+function rowOf(id){
+  return document.querySelector('#alarmList .arow[data-id="'+id+'"]');
+}
+function updateHead(opened){
+  openedCount=opened;
+  var sub='还剩 '+opened+' 个没关。';
+  if(opened===37){sub='还剩 37 个没关。——表上明明写着 38 个。';}
+  $('listSub').textContent=sub;
+}
+/* ================= JS-4 · 核心交互 ================= */
+
+/* ---- 状态栏：电量 100→13 / 43°C / 泛红 / 时钟倒走 ---- */
+function updateStatus(){
+  var n=countClosed();
+  var pct=100-Math.floor(87*n/38);
+  if(pct<13){pct=13;}
+  $('battPct').textContent=pct+'%';
+  $('battFill').style.width=pct+'%';
+  if(pct<=20){
+    $('battPct').className='low';
+    $('battFill').className='lowb';
+  }else{
+    $('battPct').className='';
+    $('battFill').className='';
+  }
+  var tw=$('tempIcon');
+  if(n>=25){
+    tw.className='';
+    $('vignette').style.opacity=String(Math.min(0.6,(n-24)*0.05));
+  }else{
+    tw.className='hidden';
+    $('vignette').style.opacity='0';
+  }
+  $('sndBtn').textContent=(S.snd===1)?'声:开':'声:关';
+}
+function renderClock(){
+  var h=Math.floor(clockMin/60),m=clockMin%60;
+  $('sbClock').textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
+}
+function glitchClock(){
+  var c=$('sbClock');
+  c.className='glitch';
+  noiseBurst(0.12,0.07,1400);
+  setTimeout(function(){c.className=clockFrozen?'frozen':'';},620);
+}
+function scheduleBack(){
+  if(backTimer){clearTimeout(backTimer);}
+  backTimer=setTimeout(function(){
+    backTimer=null;
+    if(!clockFrozen&&countClosed()>=26){ /* §三7：从 #26 起偶发倒退 1 分钟 */
+      clockMin--;
+      renderClock();
+      glitchClock();
+    }
+    scheduleBack();
+  },11000+Math.floor(Math.random()*9000));
+}
+function startAmbient(){
+  if(clockTimer){return;}
+  renderClock();
+  clockTimer=setInterval(function(){
+    creepSec++;
+    if(clockFrozen){return;}
+    if(creepSec%30===0&&countClosed()<26&&clockMin<415){clockMin++;renderClock();}
+  },1000);
+  scheduleBack();
+}
+function freezeClock(){ /* 关完 #38：停在 04:44 */
+  clockFrozen=true;
+  if(backTimer){clearTimeout(backTimer);backTimer=null;}
+  clockMin=284;
+  renderClock();
+  $('sbClock').className='frozen';
+}
+function updateAll(){
+  updateStatus();
+  updateBag();
+}
+
+/* ---- 事件绑定 ---- */
+function bindListEvents(){
+  var list=$('alarmList');
+  list.addEventListener('click',listClick,false);
+  list.addEventListener('touchstart',listTouchStart,false);
+  list.addEventListener('touchmove',listTouchMove,false);
+  list.addEventListener('touchend',listTouchEnd,false);
+  list.addEventListener('touchcancel',listTouchEnd,false);
+  list.addEventListener('mousedown',listMouseDown,false);
+  list.addEventListener('mousemove',listMouseMove,false);
+  list.addEventListener('contextmenu',function(ev){ev.preventDefault();},false);
+}
+function rowIdOf(el){
+  var r=upAttr(el,'data-id');
+  return r?r.getAttribute('data-id'):null;
+}
+function actOf(el){
+  var a=upAttr(el,'data-act');
+  return a?a.getAttribute('data-act'):null;
+}
+function clearLp(){
+  if(lpTimer){clearTimeout(lpTimer);lpTimer=null;}
+}
+function listClick(ev){
+  var id=rowIdOf(ev.target);
+  if(!id){return;}
+  if(suppressClick){suppressClick=0;return;}
+  var act=actOf(ev.target);
+  if(act==='later'){doSnark(id);return;}
+  if(act==='sw'){tryClose(id,false);return;}
+  if(lpFired){lpFired=0;return;}
+}
+function listTouchStart(ev){
+  lpFired=0;
+  var t=ev.touches&&ev.touches[0];
+  if(!t){return;}
+  var id=rowIdOf(ev.target);
+  if(!id){tp=null;return;}
+  var act=actOf(ev.target);
+  var actEl=upAttr(ev.target,'data-act');
+  var row=upAttr(ev.target,'data-id');
+  tp={id:id,row:row,sx:t.clientX,sy:t.clientY,moved:0,swEl:(act==='sw')?actEl:null,lpTimer:null,holding:false,slid:0};
+  var al=findAlarm(id);
+  if(tp.swEl){
+    if(al&&(al.bh==='stuck'||al.bh==='stuck2')){
+      tp.holding=true;
+      beginHold(id,row,tp.swEl,row.querySelector('.holdbar'));
+    }
+  }else{
+    tp.lpTimer=setTimeout(function(){lpFired=1;openCard(id);},560);
+  }
+}
+function listTouchMove(ev){
+  if(!tp){return;}
+  var t=ev.touches&&ev.touches[0];
+  if(!t){return;}
+  var dx=t.clientX-tp.sx,dy=t.clientY-tp.sy;
+  if(Math.abs(dx)>12||Math.abs(dy)>12){
+    tp.moved=1;
+    if(tp.lpTimer){clearTimeout(tp.lpTimer);tp.lpTimer=null;}
+    if(tp.holding){
+      cancelHold();
+      tp.holding=false;
+    }else if(tp.swEl&&dx>18&&!tp.slid){
+      tp.slid=1;
+      suppressClick=1;
+      tryClose(tp.id,true);
+      ev.preventDefault();
+    }
+  }
+}
+function listTouchEnd(){
+  if(!tp){return;}
+  if(tp.lpTimer){clearTimeout(tp.lpTimer);tp.lpTimer=null;}
+  if(tp.holding){cancelHold();}
+  tp=null;
+}
+function listMouseDown(ev){
+  var id=rowIdOf(ev.target);
+  if(!id){return;}
+  var act=actOf(ev.target);
+  var actEl=upAttr(ev.target,'data-act');
+  var row=upAttr(ev.target,'data-id');
+  if(act==='sw'){
+    var al=findAlarm(id);
+    if(al&&(al.bh==='stuck'||al.bh==='stuck2')){
+      beginHold(id,row,actEl,row.querySelector('.holdbar'));
+    }
+    return;
+  }
+  if(act){return;}
+  lpTimer=setTimeout(function(){lpFired=1;openCard(id);},560);
+}
+function listMouseMove(){
+  if(lpTimer){clearLp();}
+}
+
+/* ---- stuck 强制关闭：长按 3 秒（#30 双段 2.9 秒弹开） ---- */
+function beginHold(id,row,sw,bar){
+  if(holdState){return;}
+  var al=findAlarm(id);
+  if(!al||S.closed[id]){return;}
+  ensureAudio();
+  var dbl=(al.bh==='stuck2');
+  var att=attempts[id]||0;
+  var need=(dbl&&att<1)?2.9:3;
+  holdState={id:id,row:row,sw:sw,bar:bar,al:al,heart:setInterval(function(){heartSnd();},840),timers:[]};
+  heartSnd();
+  if(sw){sw.className='sw on holding';}
+  $('app').classList.add('shakeS');
+  if(bar){
+    bar.style.transition='width '+need+'s linear';
+    bar.style.width='100%';
+  }
+  holdState.timers.push(setTimeout(function(){
+    if(dbl&&att<1){failHold();}else{finishHold();}
+  },need*1000));
+}
+function endHold(){
+  if(!holdState){return;}
+  var hs=holdState;
+  holdState=null;
+  clearInterval(hs.heart);
+  var i;
+  for(i=0;i<hs.timers.length;i++){clearTimeout(hs.timers[i]);}
+  if(hs.bar){
+    hs.bar.style.transition='width .25s';
+    hs.bar.style.width='0';
+  }
+  if(hs.sw){hs.sw.className='sw on';}
+  $('app').classList.remove('shakeS');
+  $('app').classList.remove('shakeB');
+}
+function cancelHold(){endHold();}
+function shakeBig(){
+  var a=$('app');
+  a.classList.add('shakeB');
+  setTimeout(function(){if(!holdState){a.classList.remove('shakeB');}},800);
+}
+function failHold(){
+  var hs=holdState;
+  if(!hs){return;}
+  var id=hs.id;
+  endHold();
+  attempts[id]=1;
+  suppressClick=1;
+  if(hs.al.bh==='stuck2'){humSnd(true);} /* #30：铃声变人声哼鸣 */
+  noiseBurst(0.32,0.12,2200);
+  if(hs.sw){
+    hs.sw.className='sw on snap';
+    setTimeout(function(){hs.sw.className='sw on';},430);
+  }
+  shakeBig();
+  toast('它弹开了。再按住一次，别松手。',true,2600);
+}
+function finishHold(){
+  var hs=holdState;
+  if(!hs){return;}
+  var id=hs.id;
+  var al=hs.al;
+  endHold();
+  suppressClick=1;
+  if(al.bh==='stuck2'){humSnd(false);}
+  closeAlarm(id,true);
+}
+function shakeRow(row){
+  if(!row){return;}
+  row.className=row.className+' shakex';
+  setTimeout(function(){row.className=row.className.replace(/ ?shakex/,'');},360);
+}
+
+/* ---- 关闭 ---- */
+function tryClose(id,viaSlide){
+  var al=findAlarm(id);
+  if(!al||S.closed[id]){return;}
+  ensureAudio();
+  if(al.bh==='stuck'||al.bh==='stuck2'){
+    var row=rowOf(id);
+    var sw=row?row.querySelector('.sw'):null;
+    if(sw){
+      sw.className='sw on snap';
+      setTimeout(function(){sw.className='sw on';},430);
+    }
+    beep(160,0.12,0.14);
+    shakeRow(row);
+    toast('长按 3 秒，强制关闭。',true,1800);
+    return;
+  }
+  closeAlarm(id,viaSlide);
+}
+function closeAlarm(id,viaSlide){
+  if(S.closed[id]){return;}
+  var al=findAlarm(id);
+  if(!al){return;}
+  humSnd(false);
+  S.closed[id]=Date.now();
+  if(isOrig(id)){S.n=countClosed();}
+  if(!isOrig(id)){liveGhosts[id]=0;}
+  var now=Date.now();
+  comboN=(now-lastCloseAt<3000)?comboN+1:1; /* §三3：间隔<3s 连击 */
+  lastCloseAt=now;
+  S.combo=comboN;
+  if(comboN===5){toast('手速不错——它也这么觉得。',false,2600);}
+  tickOff(al.n);
+  var row=rowOf(id);
+  if(row){
+    row.className=row.className+' gone';
+    (function(r){
+      setTimeout(function(){if(r.parentNode){r.parentNode.removeChild(r);}},480);
+    })(row);
+    openedCount=Math.max(0,openedCount-1);
+    updateHead(openedCount);
+  }
+  save();
+  if(isOrig(id)){
+    var n=parseInt(id,10);
+    var b=BANNERS[n];
+    if(b){
+      (function(bb){
+        setTimeout(function(){showBanner(bb.app,bb.txt,bb.low);},1100);
+      })(b);
+    }
+    scheduleRevivesFor(id);
+  }
+  updateAll();
+  checkEnd();
+}
+
+/* ---- revive：60 秒后按表重现（§三5 共 4 处） ---- */
+function scheduleRevivesFor(id){
+  if(!isOrig(id)){return;}
+  var n=parseInt(id,10);
+  var i,r;
+  for(i=0;i<REVIVES.length;i++){
+    r=REVIVES[i];
+    if(r.src===n&&!schedRevive[r.gid]&&!S.closed[r.gid]){
+      schedRevive[r.gid]=1;
+      pendingRevives++;
+      (function(gid){
+        setTimeout(function(){spawnGhost(gid);},60000);
+      })(r.gid);
+    }
+  }
+}
+function spawnGhost(gid){
+  if(S.closed[gid]||liveGhosts[gid]===1){
+    pendingRevives=Math.max(0,pendingRevives-1);
+    return;
+  }
+  pendingRevives=Math.max(0,pendingRevives-1);
+  liveGhosts[gid]=1;
+  reverseTick();
+  if($('pgList').className.indexOf('hidden')<0){
+    prependRow(gid);
+  }else{
+    renderList();
+  }
+  setTimeout(function(){showBanner('闹钟','1 个闹钟已恢复',1);},650);
+  updateAll();
+  save();
+  checkEnd();
+}
+
+/* ---- 稍后提醒：损友闹钟彩蛋池 ---- */
+function doSnark(id){
+  ensureAudio();
+  var al=findAlarm(id);
+  if(!al){return;}
+  var pool=(al.n<=14)?SNARK_FUN:SNARK_COLD;
+  var i=Math.floor(Math.random()*pool.length);
+  if(i===snarkIdx){i=(i+1)%pool.length;}
+  snarkIdx=i;
+  toast(pool[i],al.n>14,2800);
+  if(al.n<=14){beep(520,0.09,0.09);}else{beep(196,0.14,0.09);}
+}
+
+/* ---- 结局判定：38 条全关 + 无待复活 + 无活着的幽灵 ---- */
+function checkEnd(){
+  if(S._done){return;}
+  var i;
+  for(i=0;i<ALARMS.length;i++){
+    if(!S.closed[String(ALARMS[i].n)]){return;}
+  }
+  if(pendingRevives>0){return;}
+  var k;
+  for(k in liveGhosts){
+    if(liveGhosts.hasOwnProperty(k)&&liveGhosts[k]===1&&!S.closed[k]){return;}
+  }
+  startEnding();
+}
+/* ================= JS-5 · 横幅/线索卡/便签袋/结局/init ================= */
+
+/* ---- 通知横幅（锁屏式顶部滑下） ---- */
+function showBanner(app,txt,low){
+  ensureAudio();
+  bannerDing(low);
+  var w=$('bannerWrap');
+  var d=document.createElement('div');
+  d.className='banner '+(BANNER_CLS[app]||'alarm')+(low===1?' lowB':'');
+  var ico=document.createElement('div');
+  ico.className='bIco';
+  ico.textContent=app.substring(0,1);
+  var col=document.createElement('div');
+  col.className='bCol';
+  var a1=document.createElement('div');
+  a1.className='bApp';
+  a1.textContent=app;
+  var a2=document.createElement('div');
+  a2.className='bTxt';
+  a2.textContent=txt;
+  col.appendChild(a1);
+  col.appendChild(a2);
+  var now=document.createElement('div');
+  now.className='bNow';
+  now.textContent='现在';
+  d.appendChild(ico);
+  d.appendChild(col);
+  d.appendChild(now);
+  w.appendChild(d);
+  var gone=false;
+  var dismiss=function(){
+    if(gone){return;}
+    gone=true;
+    d.className=d.className+' out';
+    setTimeout(function(){if(d.parentNode){d.parentNode.removeChild(d);}},460);
+  };
+  d.addEventListener('click',dismiss,false);
+  setTimeout(dismiss,4800);
+}
+
+/* ---- 线索卡：长按闹钟本体弹出；带 LC 收藏进便签袋 ---- */
+function openCard(id){
+  var al=findAlarm(id);
+  if(!al){return;}
+  ensureAudio();
+  S.notes[id]=1;
+  $('cardHead').textContent='闹钟 #'+al.n+' · '+al.d+' '+al.t;
+  $('cardTag').textContent=(al.tag!=='')?al.tag:'（无标签）';
+  var nt=$('cardNote');
+  var extra=LC_EXTRAS[al.lc];
+  var noteTxt=al.note||extra||'';
+  if(noteTxt){
+    nt.textContent=noteTxt;
+    nt.className='';
+  }else{
+    nt.textContent='（这条没有备注。）';
+    nt.className='mut';
+  }
+  $('cardCr').textContent='创建于 '+al.cr+(al.dt?' · 显示时间 '+al.dt:'');
+  var cl=$('cardLc');
+  if(al.lc){
+    if(S.lc.indexOf(al.lc)<0){
+      S.lc.push(al.lc);
+      S.lc.sort(function(a,b){return a-b;});
+      cl.textContent='LC'+al.lc+' 已收进便签（'+S.lc.length+'/8）';
+      beep(1040,0.12,0.08);
+    }else{
+      cl.textContent='LC'+al.lc+' · 已在便签袋里（'+S.lc.length+'/8）';
+    }
+    cl.className='';
+  }else{
+    cl.className='hidden';
+  }
+  $('cardBox').className=al.lc?'lcCard':'';
+  $('cardMask').className='';
+  updateBag();
+  save();
+}
+function closeCard(){$('cardMask').className='hidden';}
+
+/* ---- 便签袋（右下角 x/8） ---- */
+function updateBag(){
+  var badge=$('bagBadge');
+  if(badge){
+    badge.textContent=S.lc.length+'/8';
+    $('bagFab').className=(S.lc.length>=8)?'full':'';
+  }
+  var bl=$('bagList');
+  if(!bl){return;}
+  bl.innerHTML='';
+  var i,code,al,any=false;
+  for(i=0;i<S.lc.length;i++){
+    code=S.lc[i];
+    al=findAlarm(LC_ALARM[code]);
+    any=true;
+    var b=document.createElement('button');
+    b.className='bagItem';
+    var c=document.createElement('span');
+    c.className='biCode';
+    c.textContent='LC'+code+' · '+(LC_TITLES[code]||'');
+    b.appendChild(c);
+    var t=document.createElement('span');
+    t.textContent=al?(al.note||LC_EXTRAS[code]||'（无备注）'):'';
+    b.appendChild(t);
+    (function(cid){
+      b.addEventListener('click',function(){openCard(cid);},false);
+    })(LC_ALARM[code]);
+    bl.appendChild(b);
+  }
+  $('bagEmpty').className=any?'hidden':'';
+}
+
+/* ---- 结局序列（圣经§四） ---- */
+function startEnding(){
+  if(S._done){return;}
+  freezeClock(); /* 关完 #38：状态栏停在 04:44 */
+  S.stage='stats';
+  save();
+  shakeBig();
+  setTimeout(function(){
+    showPage('pgEnd');
+    playStats(false);
+  },1000);
+}
+function playStats(instant){
+  var box=$('endStats');
+  box.innerHTML='';
+  var els=[];
+  var i;
+  for(i=0;i<STATS_LINES.length;i++){
+    var p=document.createElement('p');
+    p.className='stLine'+(i===3?' hot':'');
+    p.textContent=STATS_LINES[i];
+    box.appendChild(p);
+    els.push(p);
+  }
+  if(instant){
+    for(i=0;i<els.length;i++){els[i].className=els[i].className+' show';}
+    setTimeout(showNew,900);
+    return;
+  }
+  var d=500;
+  for(i=0;i<els.length;i++){
+    (function(el,dd){
+      setTimeout(function(){
+        el.className=el.className+' show';
+        countdownTick();
+      },dd);
+    })(els[i],d);
+    d+=1500;
+  }
+  setTimeout(showNew,d+600);
+}
+/* 第 40 个闹钟：时间=真实当前+3 分钟，标签「跑吧」，3:00 倒计时 */
+function showNew(){
+  S.stage='new';
+  save();
+  $('endStats').className='hidden';
+  $('pgNew').className='';
+  var now=new Date(Date.now()+180000);
+  var h=now.getHours();
+  var m=now.getMinutes();
+  $('naTime').textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
+  naLeft=180;
+  $('naCount').className='';
+  $('naCount').textContent='3:00';
+  $('naHint').textContent='闹钟将在 3 分钟后响铃。';
+  if(naTimer){clearInterval(naTimer);}
+  naTimer=setInterval(function(){
+    naLeft--;
+    if(naLeft<=0){
+      clearInterval(naTimer);
+      naTimer=null;
+      $('naCount').textContent='0:00';
+      $('naCount').className='zero';
+      $('naHint').textContent='已经到点了。它自己在响。';
+      noiseBurst(0.5,0.1,2400);
+      beep(880,0.5,0.1);
+      setTimeout(function(){beep(880,0.5,0.1);},800);
+      return;
+    }
+    countdownTick();
+    var mm=Math.floor(naLeft/60),ss=naLeft%60;
+    $('naCount').textContent=mm+':'+(ss<10?'0':'')+ss;
+  },1000);
+}
+/* 关机长按 */
+function offStart(ev){
+  if(offT){return;}
+  if(ev&&ev.preventDefault){ev.preventDefault();}
+  ensureAudio();
+  $('offProg').style.transition='width 1.5s linear';
+  $('offProg').style.width='100%';
+  tone(300,90,1.5,'sawtooth',0.05);
+  offT=setTimeout(function(){offT=null;doPowerOff();},1500);
+}
+function offEnd(){
+  if(!offT){return;}
+  clearTimeout(offT);
+  offT=null;
+  $('offProg').style.transition='width .2s';
+  $('offProg').style.width='0';
+}
+function doPowerOff(){
+  S.stage='off';
+  save();
+  powerDown();
+  $('offMask').className='hidden';
+  $('pgNew').className='hidden';
+  setTimeout(function(){playFinal(false);},5000); /* 黑屏 5 秒 */
+}
+function playFinal(instant){
+  S._done=1;
+  S.stage='end';
+  save();
+  var box=$('endFinal');
+  box.className='';
+  box.innerHTML='';
+  var lines=[];
+  var i;
+  for(i=0;i<FINAL_LINES.length;i++){lines.push(FINAL_LINES[i]);}
+  if(S.lc.length>=8){lines.push(FINAL_LC_LINE);} /* 线索 8/8 追加行 */
+  var doneIdx=lines.length;
+  lines.push('—— 完 ——');
+  var els=[];
+  for(i=0;i<lines.length;i++){
+    var p=document.createElement('p');
+    p.className=(i===doneIdx)?'finDone':'finLine';
+    p.textContent=lines[i];
+    box.appendChild(p);
+    els.push(p);
+  }
+  var r=document.createElement('a');
+  r.id='restartLink';
+  r.textContent='重新开始';
+  els.push(r);
+  box.appendChild(r);
+  if(instant){
+    for(i=0;i<els.length;i++){els[i].className=els[i].className+' show';}
+  }else{
+    var d=700;
+    for(i=0;i<els.length;i++){
+      (function(el,dd){
+        setTimeout(function(){
+          el.className=el.className+' show';
+          if(el.className.indexOf('finLine')>=0||el.className.indexOf('finDone')>=0){countdownTick();}
+        },dd);
+      })(els[i],d);
+      d+=2000;
+    }
+  }
+  r.addEventListener('click',function(){
+    try{window.localStorage.removeItem(SAVE_KEY);}catch(e){}
+    window.location.reload();
+  },false);
+}
+
+/* ---- 存档恢复：复活计时用 closed 时间戳重算 ---- */
+function restoreGhosts(){
+  var i,r,srcId,remain;
+  for(i=0;i<REVIVES.length;i++){
+    r=REVIVES[i];
+    srcId=String(r.src);
+    if(S.closed[srcId]&&!S.closed[r.gid]){
+      remain=(S.closed[srcId]+60000)-Date.now();
+      if(remain<=0){
+        liveGhosts[r.gid]=1;
+      }else if(!schedRevive[r.gid]){
+        schedRevive[r.gid]=1;
+        pendingRevives++;
+        (function(gid,ms){
+          setTimeout(function(){spawnGhost(gid);},ms);
+        })(r.gid,remain);
+      }
+    }
+  }
+}
+
+/* ---- 路由（按 stage 恢复进度） ---- */
+function route(){
+  var st=S.stage;
+  if(S._done||st==='end'){
+    showPage('pgEnd');
+    $('endStats').className='hidden';
+    $('pgNew').className='hidden';
+    $('offMask').className='hidden';
+    playFinal(true);
+    return;
+  }
+  if(st==='off'){
+    showPage('pgEnd');
+    $('endStats').className='hidden';
+    $('pgNew').className='hidden';
+    setTimeout(function(){playFinal(false);},2500);
+    return;
+  }
+  if(st==='new'){
+    showPage('pgEnd');
+    $('endStats').className='hidden';
+    showNew();
+    return;
+  }
+  if(st==='stats'){
+    showPage('pgEnd');
+    playStats(false);
+    return;
+  }
+  if(st==='list'){
+    showPage('pgList');
+    renderList();
+    startAmbient();
+    toast('已继续。还剩 '+openedCount+' 个闹钟没关。',false,2600);
+    return;
+  }
+  if(st==='lock'){
+    showPage('pgLock');
+    buildLock();
+    return;
+  }
+  startIntro();
+}
+
+/* ---- 静态事件绑定 ---- */
+function bindStatic(){
+  $('pgIntro').addEventListener('click',function(){skipIntro();},false);
+  $('btnStart').addEventListener('click',function(ev){ev.stopPropagation();startGame();},false);
+  $('pgLock').addEventListener('click',function(){enterList();},false);
+  $('sndBtn').addEventListener('click',toggleSnd,false);
+  bindListEvents();
+  $('cardClose').addEventListener('click',closeCard,false);
+  $('cardMask').addEventListener('click',function(ev){if(ev.target===$('cardMask')){closeCard();}},false);
+  $('bagFab').addEventListener('click',function(){
+    var p=$('bagPanel');
+    if(p.className.indexOf('hidden')>=0){p.className='';updateBag();}else{p.className='hidden';}
+  },false);
+  $('bagClose').addEventListener('click',function(){$('bagPanel').className='hidden';},false);
+  $('naPower').addEventListener('click',function(){$('offMask').className='';},false);
+  $('offCancel').addEventListener('click',function(){offEnd();$('offMask').className='hidden';},false);
+  var oh=$('offHold');
+  oh.addEventListener('touchstart',offStart,false);
+  oh.addEventListener('touchend',offEnd,false);
+  oh.addEventListener('touchcancel',offEnd,false);
+  oh.addEventListener('mousedown',offStart,false);
+  oh.addEventListener('mouseup',offEnd,false);
+  oh.addEventListener('mouseleave',offEnd,false);
+  oh.addEventListener('contextmenu',function(ev){ev.preventDefault();},false);
+  document.addEventListener('touchstart',function(){ensureAudio();},false);
+  document.addEventListener('mouseup',function(){cancelHold();clearLp();},false);
+}
+function toggleSnd(){
+  S.snd=(S.snd===1)?0:1;
+  if(S.snd!==1){humSnd(false);}
+  save();
+  updateStatus();
+  beep(660,0.09,0.1);
+  toast((S.snd===1)?'声音：开':'声音：关',false,1500);
+}
+
+/* ---- init ---- */
+function init(){
+  loadS();
+  if(!S.joinAt){S.joinAt=Date.now();}
+  window.onerror=function(msg,src,line){
+    try{
+      var t=$('compatTip');
+      t.style.display='block';
+      t.textContent='脚本错误（第'+line+'行）：'+msg;
+    }catch(e){}
+    return false;
+  };
+  bindStatic();
+  restoreGhosts();
+  route();
+}
+init();
+</script>
+</body>
+</html>
