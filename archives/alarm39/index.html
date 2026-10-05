@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#050507">
-<title>第39个闹钟 v0.1</title>
-<!-- 《第39个闹钟》v0.1 · 单交互恐怖 demo · 单文件零依赖零图片零外链 · 存档 alarm39_v01 · 文案依据剧本圣经 v0.1 §一/§二/§四 逐字照抄 -->
+<title>第39个闹钟 v0.1.1</title>
+<!-- 《第39个闹钟》v0.1.1 · 单交互恐怖 demo · 单文件零依赖零图片零外链 · 存档 alarm39_v01 · 文案依据剧本圣经 v0.1.1 §一/§二/§四 逐字照抄 -->
 <style>
 /* ========== 基础 ========== */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -505,9 +505,11 @@ a{color:inherit;text-decoration:none;cursor:pointer;}
       <h1 class="introTitle">第39个闹钟</h1>
       <div class="introSub">单交互恐怖 · 关闹钟 · demo</div>
       <div id="introLines">
-        <p class="tyline" data-t="10-05，夜雨。登山社说沈亦舟在鳌太线失联第三天。"></p>
-        <p class="tyline" data-t="搜救队在他常走的校道边的帐篷里捡到这部手机——人在山上，手机在城里。"></p>
-        <p class="tyline" data-t="他妈托你把闹钟关了，“别让它在守灵那几天响”。"></p>
+        <p class="tyline" data-t="10-05，夜雨。沈亦舟在鳌太线失联第三天。"></p>
+        <p class="tyline" data-t="傍晚，你在他常走的校道边发现一顶帐篷——登山社登记过的那顶。可他的帐篷，应该背在山上。"></p>
+        <p class="tyline" data-t="拉链从外面拉着，里面没有人。只有他的手机，还插着充电宝。"></p>
+        <p class="tyline" data-t="他妈在电话里哭完，托你：“把闹钟都关了。守灵那几天，别让它响。”"></p>
+        <p class="tyline" data-t="你说：阿姨，人还没找到。她说：我知道。"></p>
       </div>
       <button id="btnStart" class="hidden">【开始关闹钟】</button>
     </div>
@@ -536,7 +538,7 @@ a{color:inherit;text-decoration:none;cursor:pointer;}
       </div>
       <div class="sbGrp">
         <button id="sndBtn">声:开</button>
-        <span id="verTag">v0.1</span>
+        <span id="verTag">v0.1.1</span>
       </div>
     </div>
     <div id="listHead">
@@ -677,9 +679,11 @@ var SNARK_COLD=[
 
 /* 开场三行（圣经§一逐字） */
 var INTRO_LINES=[
-'10-05，夜雨。登山社说沈亦舟在鳌太线失联第三天。',
-'搜救队在他常走的校道边的帐篷里捡到这部手机——人在山上，手机在城里。',
-'他妈托你把闹钟关了，“别让它在守灵那几天响”。'
+'10-05，夜雨。沈亦舟在鳌太线失联第三天。',
+'傍晚，你在他常走的校道边发现一顶帐篷——登山社登记过的那顶。可他的帐篷，应该背在山上。',
+'拉链从外面拉着，里面没有人。只有他的手机，还插着充电宝。',
+'他妈在电话里哭完，托你：“把闹钟都关了。守灵那几天，别让它响。”',
+'你说：阿姨，人还没找到。她说：我知道。'
 ];
 /* 结局统计行（圣经§四逐字） */
 var STATS_LINES=[
